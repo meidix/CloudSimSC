@@ -33,7 +33,7 @@ public class Constants {
     /**
      * Startup delay for VMs and the containers are mentioned here.
      */
-    public static final double CONTAINER_STARTTUP_DELAY = 0.5;//the amount is in seconds
+    public static final double CONTAINER_STARTTUP_DELAY = 2.0;//the amount is in seconds
     public static final double VM_STARTTUP_DELAY = 100;//the amoun is in seconds
     /**
      * Initial scheduling delay for a function request.
@@ -53,7 +53,7 @@ public class Constants {
     public static final int NUM_TASKS = 50;
     public static final double CPU_USAGE_MONITORING_INTERVAL = 0.01;
 
-    public static final double AUTO_SCALING_INTERVAL = 2;
+    public static final double AUTO_SCALING_INTERVAL = 5;
     public static final double FUNCTION_PLACEMENT_TIME = 0.002;
     public static final double MINIMUM_INTERVAL_BETWEEN_TWO_CLOUDLET_SUBMISSIONS = 0.001;
     public static final double CLOUDLET_CREATING_INTERVAL = 50.0;
@@ -68,7 +68,7 @@ public class Constants {
     public static final float[] VM_RAM = new float[] {(float)3072, (float) 3072, (float) 3072, (float) 3072};//**MB*
     public static final int VM_BW = 200000;
     public static final int VM_SIZE = 30000;
-    public static final int CPU_HISTORY_LENGTH = 30;
+    public static final int CPU_HISTORY_LENGTH = 50;
 
 
     /**
@@ -118,15 +118,15 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 5;
-    public static final int NUMBER_VMS = 20;
+    public static final int NUMBER_HOSTS = 4;
+    public static final int NUMBER_VMS = 16;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test2_small.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
 
     /**
      * Algorithm specific parameters
@@ -135,11 +135,11 @@ public class Constants {
     public static final double UNDER_UTILIZATION_THRESHOLD = 0.70;
     public static final double CONTAINER_SCALE_CPU_THRESHOLD = 0.40;
     public static final boolean CONTAINER_CONCURRENCY = false;
-    public static final boolean FUNCTION_AUTOSCALING = false;
+    public static final boolean FUNCTION_AUTOSCALING = true;
     public static final boolean FUNCTION_HORIZONTAL_AUTOSCALING = false;
-    public static final boolean FUNCTION_VERTICAL_AUTOSCALING = false;
-    public static final boolean SCALE_PER_REQUEST = true;
-    public static final String VM_SELECTION_ALGO = "BPFF";
+    public static final boolean FUNCTION_VERTICAL_AUTOSCALING = true;
+    public static final boolean SCALE_PER_REQUEST = false;
+    public static final String VM_SELECTION_ALGO = "RR";
     public static final String HOR_SCALING_LOGIC = "cpuThreshold";
     public static final String SCALING_TRIGGER_LOGIC = "cpuThreshold";
     public static final String CONTAINER_SELECTION_ALGO = "FF";
