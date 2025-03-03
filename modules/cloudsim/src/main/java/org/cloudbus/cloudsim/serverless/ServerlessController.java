@@ -162,9 +162,8 @@ public class ServerlessController extends ContainerDatacenterBroker {
 
         submitContainer(cl, container);
         containerId++;
-
-
     }
+
     protected void processScaledContainer(SimEvent ev){
         String[] data = (String[]) ev.getData();
         int brokerId = Integer.parseInt(data[0]);

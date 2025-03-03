@@ -63,9 +63,9 @@ public class Constants {
      */
 
     public static final int VM_TYPES = 4;
-    public static final double[] VM_MIPS = new double[]{ 11600, 11600, 11600,11600};
-    public static final int[] VM_PES = new int[]{4, 4, 4, 4};
-    public static final float[] VM_RAM = new float[] {(float)3072, (float) 3072, (float) 3072, (float) 3072};//**MB*
+    public static final double[] VM_MIPS = new double[]{ 16000, 16000, 16000, 16000};
+    public static final int[] VM_PES = new int[]{8, 8, 8, 8};
+    public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
     public static final int VM_BW = 200000;
     public static final int VM_SIZE = 30000;
     public static final int CPU_HISTORY_LENGTH = 50;
@@ -78,9 +78,11 @@ public class Constants {
     public static final int CONTAINER_TYPES = 3;
 //    public static final int[] CONTAINER_MIPS = new int[]{4658, 9320, 18636};
     public static final double[] CONTAINER_MIPS = new double[]{4658, 9320, 18636};
-    public static final int[] CONTAINER_MIPS_INCREMENT = new int[]{-932, -466, -233, 0, 233, 466, 932};
+//    public static final int[] CONTAINER_MIPS_INCREMENT = new int[]{-932, -466, -233, 0, 233, 466, 932};
+    public static final int[] CONTAINER_MIPS_INCREMENT = new int[]{-233, 0, 233, 466, 932};
     public static final int[] CONTAINER_RAM = new int[]{512, 512, 512};
-    public static final int[] CONTAINER_RAM_INCREMENT = new int[]{-1024, -512, -128, 0, 128, 512, 1024};
+//    public static final int[] CONTAINER_RAM_INCREMENT = new int[]{-1024, -512, -128, 0, 128, 512, 1024};
+    public static final int[] CONTAINER_RAM_INCREMENT = new int[]{-128, 0, 128, 512, 1024};
     public static final int MIN_CONTAINER_MIPS = 466;
     public static final int MIN_CONTAINER_RAM = 128;
     public static final int MAX_CONTAINER_MIPS = 11600;
@@ -102,10 +104,10 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{46400, 46400, 46400};
-    public static final int[] HOST_PES = new int[]{4, 4, 4};
-    public static final int[] HOST_RAM = new int[]{65536, 65536, 65536};
-    public static final int HOST_BW = 1000000;
+    public static final int[] HOST_MIPS = new int[]{256000, 256000, 25600};
+    public static final int[] HOST_PES = new int[]{64, 64, 64};
+    public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
+    public static final int HOST_BW = 10000000;
     public static final int HOST_STORAGE = 1000000;
     public static final PowerModel[] HOST_POWER = new PowerModel[]{new PowerModelSpecPowerHpProLiantMl110G4Xeon3040(),
             new PowerModelSpecPowerHpProLiantMl110G5Xeon3075(), new PowerModelSpecPowerIbmX3550XeonX5670()};
@@ -118,8 +120,8 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 4;
-    public static final int NUMBER_VMS = 16;
+    public static final int NUMBER_HOSTS = 1;
+    public static final int NUMBER_VMS = 8;
     public static final int NUMBER_requestS = 5;
 
     /**
@@ -150,6 +152,17 @@ public class Constants {
     public static final boolean CONTAINER_IDLING_ENABLED = false;
 
     public static final int CONTAINER_IDLING_TIME = 5;
+
+
+    /*
+    * ENSURE related settings
+    * */
+    public static final int ENSURE_RESPONSE_TIME_WINDOW_SIZE = 10;
+    public static final double ENSURE_LATENCY_THRESHOLD = 1.15;
+    public static final int ENSURE_STATE_SAFE = 1;
+    public static final int ENSURE_STATE_PRE_WARMING = 2;
+    public static final int ENSURE_STATE_WARNING = 3;
+    public static final int ENSURE_STATE_UNSAFE = 4;
 
 
 }

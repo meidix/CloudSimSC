@@ -200,8 +200,8 @@ public class ServerlessSimpleSimulation {
 
     long fileSize = 10L;
     long outputSize = 10L;
-    double cpuShareReq = 1.0d;
-    double memShareReq = 1.0d;
+    double cpuShareReq = 0.8d;
+    double memShareReq = 0.8d;
     double arrivalTime;
     String functionID;
     long requestLength;
@@ -221,7 +221,6 @@ public class ServerlessSimpleSimulation {
       pesNumber = Integer.parseInt(data[3]);
       containerMemory = Integer.parseInt(data[4]);
       containerMips = Integer.parseInt(data[5]);
-
       try {
         request = new ServerlessRequest(
                 IDs.pollId(ServerlessRequest.class),

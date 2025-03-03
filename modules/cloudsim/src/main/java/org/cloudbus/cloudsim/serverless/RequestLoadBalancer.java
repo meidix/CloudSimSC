@@ -111,7 +111,41 @@ public class RequestLoadBalancer {
                 }
                 break;
             }
+            case "ENSURE": {
+                for (int x = 1; x <= broker.getVmsCreatedList().size(); x++) {
+                    EnsureServerlessInvoker vm = (EnsureServerlessInvoker) (ContainerVmList.getById(broker.getVmsCreatedList(), x));
+                    assert vm != null;
+                    if (vm.getState() == Constants.ENSURE_STATE_UNSAFE) continue;
+                    for (ServerlessContainer cont : vm.getWarmContainers(task)) {
+                        ServerlessRequestScheduler clScheduler = (ServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
+                        if (clScheduler.isSuitableForRequest(task, cont)) {
+                            clScheduler.setTotalCurrentAllocatedRamForRequests(task);
+                            clScheduler.setTotalCurrentAllocatedMipsShareForRequests(task);
+                            Log.printLine(String.format("Using idling container: container #%s", cont.getId()));
+                            task.setContainerId(cont.getId());
+                            broker.addToVmTaskMap(task, vm);
+                            cont.setRunningTask(task);
+                            cont.setIdling(false);
+                            cont.setIdleStartTime(0);
+                            broker.setFunctionVmMap(vm, task.getRequestFunctionId());
+                            broker.requestSubmitClock = CloudSim.clock();
+                            broker.submitRequestToDC(task, vm.getId(), 0, cont.getId());
+                            return true;
+                        }
+                    }
+
+                    int capacity = vm.getFunctionCapacity(task);
+                    if (capacity > 0) {
+                        broker.toSubmitOnContainerCreation.add(task);
+                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
+                        broker.requestSubmitClock = CloudSim.clock();
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
+
         if(Constants.CONTAINER_CONCURRENCY && Constants.FUNCTION_HORIZONTAL_AUTOSCALING){
             if (contTypeExists){
                 broker.sendFunctionRetryRequest(task);
