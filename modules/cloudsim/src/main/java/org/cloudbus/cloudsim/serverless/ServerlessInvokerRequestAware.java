@@ -20,7 +20,6 @@ public class ServerlessInvokerRequestAware  extends ServerlessInvoker {
     }
 
     protected void addToFinishedTaskMap(ServerlessRequest request) {
-        finishedTasksMap = new HashMap<>();
         if (finishedTasksMap.containsKey(request.getRequestFunctionId())) {
             finishedTasksMap.get(request.getRequestFunctionId()).add(request);
         } else {
@@ -31,6 +30,7 @@ public class ServerlessInvokerRequestAware  extends ServerlessInvoker {
     }
 
     protected HashMap<String, ArrayList<ServerlessRequest>> getFinishedTaskMap() {
+        finishedTasksMap = new HashMap<>();
         for (Container cont: getContainerList()) {
             List<ServerlessRequest> finishedRequests = ((ServerlessContainer) cont).getfinishedTasks();
             for (ServerlessRequest request : finishedRequests) {

@@ -73,4 +73,10 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
             return capacity;
         }
     }
+
+    @Override
+    public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
+        boolean isSuitable = super.isSuitableForContainer(container, vm);
+        return isSuitable && getState() < Constants.ENSURE_STATE_UNSAFE;
+    }
 }
