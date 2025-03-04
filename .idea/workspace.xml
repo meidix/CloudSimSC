@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added EnsureSimulation and Scheduling">
-      <change afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java" afterDir="false" />
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added EnsureAutoScaler for now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java" afterDir="false" />
@@ -44,7 +43,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.EnsureSimulation.executor": "Run",
+    "Application.EnsureSimulation.executor": "Debug",
     "Application.ServerlessSimpleSimulation.executor": "Debug",
     "Maven.cloudsim-package [clean,package].executor": "Run",
     "Maven.cloudsim-package [clean].executor": "Run",
@@ -142,7 +141,7 @@
       <workItem from="1740928564127" duration="25000" />
       <workItem from="1740928592563" duration="3000" />
       <workItem from="1740928715932" duration="37783000" />
-      <workItem from="1741099690973" duration="3145000" />
+      <workItem from="1741099690973" duration="6796000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
@@ -272,7 +271,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741101736680</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="added EnsureAutoScaler for now">
+      <option name="closed" value="true" />
+      <created>1741103131515</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1741103131515</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +302,8 @@
     <MESSAGE value="Completed the Scheduler" />
     <MESSAGE value="added Ensure FunctionScheduler" />
     <MESSAGE value="added EnsureSimulation and Scheduling" />
-    <option name="LAST_COMMIT_MESSAGE" value="added EnsureSimulation and Scheduling" />
+    <MESSAGE value="added EnsureAutoScaler for now" />
+    <option name="LAST_COMMIT_MESSAGE" value="added EnsureAutoScaler for now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -355,15 +363,22 @@
           <option name="timeStamp" value="134" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="((ServerlessContainer) container).getRunningTasks().size() &gt; 0" language="JAVA" />
+          <condition expression="((ServerlessContainer) container).getId() == 23" language="JAVA" />
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessInvoker.java</url>
           <line>60</line>
           <option name="timeStamp" value="138" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java</url>
-          <line>226</line>
-          <option name="timeStamp" value="143" />
+          <condition expression="this.getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessContainer.java</url>
+          <line>64</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="container.getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
+          <line>171</line>
+          <option name="timeStamp" value="161" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -378,6 +393,9 @@
         <watch expression="((ServerlessContainer) container).getIdling()" language="JAVA" />
         <watch expression="((ServerlessContainer)(ContainerList.getById(getContainerList(), request.getContainerId()))).getfinishedTasks()" language="JAVA" />
         <watch expression="(((ServerlessContainer)(ContainerList.getById(getContainerList(), request.getContainerId()))).getRunningTasks()).size()" language="JAVA" />
+        <watch expression="Math.round(((ServerlessContainer)container).getIdleStartTime()*100000)/100000" language="JAVA" />
+        <watch expression="Math.round(CloudSim.clock()*100000)/100000" language="JAVA" />
+        <watch expression="((HashMap) functionContainerMap).entrySet().size()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

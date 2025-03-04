@@ -138,7 +138,7 @@ public class Constants {
     public static final double UNDER_UTILIZATION_THRESHOLD = 0.70;
     public static final double CONTAINER_SCALE_CPU_THRESHOLD = 0.40;
     public static final boolean CONTAINER_CONCURRENCY = false;
-    public static final boolean FUNCTION_AUTOSCALING = true;
+    public static final boolean FUNCTION_AUTOSCALING = false;
     public static final boolean FUNCTION_HORIZONTAL_AUTOSCALING = false;
     public static final boolean FUNCTION_VERTICAL_AUTOSCALING = false;
     public static final boolean SCALE_PER_REQUEST = false;
@@ -152,7 +152,7 @@ public class Constants {
 
     public static final boolean CONTAINER_IDLING_ENABLED = true;
 
-    public static final int CONTAINER_IDLING_TIME = 5;
+    public static final int CONTAINER_IDLING_TIME = 1000;
 
 
     /*
