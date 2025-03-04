@@ -89,7 +89,8 @@ public class ServerlessDatacenter extends PowerContainerDatacenterCM {
         super(name, characteristics, vmAllocationPolicy, containerAllocationPolicy, storageList, schedulingInterval, experimentName, logAddress, vmStartupDelay, containerStartupDelay);
         tasksWaitingToReschedule = new HashMap<Integer, ServerlessRequest>();
         setMonitoring(monitor);
-        autoScaler = new FunctionAutoScaler(this);
+//        autoScaler = new FunctionAutoScaler(this);
+        autoScaler = new EnsureAutoScaler(this);
 
     }
 

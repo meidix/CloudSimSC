@@ -152,7 +152,7 @@ public class Constants {
 
     public static final boolean CONTAINER_IDLING_ENABLED = true;
 
-    public static final int CONTAINER_IDLING_TIME = 10;
+    public static final int CONTAINER_IDLING_TIME = 5;
 
 
     /*
