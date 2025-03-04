@@ -129,7 +129,7 @@ public class RequestLoadBalancer {
                             cont.setIdleStartTime(0);
                             broker.setFunctionVmMap(vm, task.getRequestFunctionId());
                             broker.requestSubmitClock = CloudSim.clock();
-                            broker.submitRequestToDC(task, vm.getId(), 0, cont.getId());
+                            broker.submitRequestToDC(task, x, 0, cont.getId());
                             return true;
                         }
                     }
@@ -137,7 +137,7 @@ public class RequestLoadBalancer {
                     int capacity = vm.getFunctionCapacity(task);
                     if (capacity > 0) {
                         broker.toSubmitOnContainerCreation.add(task);
-                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
+                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), x);
                         broker.requestSubmitClock = CloudSim.clock();
                         return true;
                     }

@@ -42,7 +42,7 @@ public class Constants {
     /**
      * Scheduling retry  gap for a function request.
      */
-    public static final double FUNCTION_SCHEDULING_RETRY_DELAY = 0.2;
+    public static final double FUNCTION_SCHEDULING_RETRY_DELAY = 2.0;
 
     public static final double VM_CPU_USAGE_THRESHOLD = 0.9;
     public static final int WINDOW_SIZE = 10;
@@ -128,7 +128,8 @@ public class Constants {
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
+    public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
      * Algorithm specific parameters
@@ -139,19 +140,19 @@ public class Constants {
     public static final boolean CONTAINER_CONCURRENCY = false;
     public static final boolean FUNCTION_AUTOSCALING = true;
     public static final boolean FUNCTION_HORIZONTAL_AUTOSCALING = false;
-    public static final boolean FUNCTION_VERTICAL_AUTOSCALING = true;
+    public static final boolean FUNCTION_VERTICAL_AUTOSCALING = false;
     public static final boolean SCALE_PER_REQUEST = false;
     public static final String VM_SELECTION_ALGO = "RR";
     public static final String HOR_SCALING_LOGIC = "cpuThreshold";
     public static final String SCALING_TRIGGER_LOGIC = "cpuThreshold";
-    public static final String CONTAINER_SELECTION_ALGO = "FF";
+    public static final String CONTAINER_SELECTION_ALGO = "ENSURE";
     public static final int MAX_RESCHEDULE_TRIES = 8;
     public static final boolean MONITORING = true;
     public static final int MAX_REPLICAS = 50;
 
-    public static final boolean CONTAINER_IDLING_ENABLED = false;
+    public static final boolean CONTAINER_IDLING_ENABLED = true;
 
-    public static final int CONTAINER_IDLING_TIME = 5;
+    public static final int CONTAINER_IDLING_TIME = 10;
 
 
     /*
