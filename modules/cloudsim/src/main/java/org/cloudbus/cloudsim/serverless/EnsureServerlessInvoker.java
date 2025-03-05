@@ -55,13 +55,12 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
     }
 
     public ArrayList<ServerlessContainer> getWarmContainers(ServerlessRequest request) {
-        List<Container> vmContainers = getContainerList();
         ArrayList<ServerlessContainer> warmContainers = new ArrayList<>();
+        List<Container> vmContainers = getContainerList();
         for (Container container : vmContainers) {
             if (
                     ((ServerlessContainer) container).getType().equals(request.getRequestFunctionId()) &&
-                            ((ServerlessContainer) container).getRunningTasks().size() == 0 &&
-                            ((ServerlessContainer) container).getfinishedTasks().size() > 0 ) {
+                            ((ServerlessContainer) container).getIdling() ) {
                 warmContainers.add((ServerlessContainer) container);
             }
         }
