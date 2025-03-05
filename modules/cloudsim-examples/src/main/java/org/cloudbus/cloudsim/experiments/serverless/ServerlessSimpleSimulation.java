@@ -110,12 +110,13 @@ public class ServerlessSimpleSimulation {
 
       // Printing the results when the simulation is finished.
       List<ContainerCloudlet> finishedRequests = controller.getCloudletReceivedList();
+      List<ServerlessContainer> destroyedContainers = controller.getContainersDestroyedList();
       double averageResourceUtilization = controller.getAverageResourceUtilization();
 
       saveResultsAsCSV();
       // printRequestList(finishedRequests);
-      // printContainerList(destroyedContainers);
-      // printContainerList(containerList);
+       printContainerList(destroyedContainers);
+//       printContainerList(containerList);
       if (Constants.MONITORING) {
 //        printVmUpDownTime();
         printVmUtilization();
