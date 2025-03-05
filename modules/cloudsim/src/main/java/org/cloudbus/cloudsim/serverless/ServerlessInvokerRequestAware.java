@@ -17,6 +17,7 @@ public class ServerlessInvokerRequestAware  extends ServerlessInvoker {
 
     public ServerlessInvokerRequestAware(int id, int userId, double mips, float ram, long bw, long size, String vmm, ContainerScheduler containerScheduler, ContainerRamProvisioner containerRamProvisioner, ContainerBwProvisioner containerBwProvisioner, List<? extends ContainerPe> peList, double schedulingInterval) {
         super(id, userId, mips, ram, bw, size, vmm, containerScheduler, containerRamProvisioner, containerBwProvisioner, peList, schedulingInterval);
+        finishedTasksMap = new HashMap<>();
     }
 
     protected void addToFinishedTaskMap(ServerlessRequest request) {
@@ -30,13 +31,17 @@ public class ServerlessInvokerRequestAware  extends ServerlessInvoker {
     }
 
     protected HashMap<String, ArrayList<ServerlessRequest>> getFinishedTaskMap() {
-        finishedTasksMap = new HashMap<>();
-        for (Container cont: getContainerList()) {
-            List<ServerlessRequest> finishedRequests = ((ServerlessContainer) cont).getfinishedTasks();
-            for (ServerlessRequest request : finishedRequests) {
-                addToFinishedTaskMap(request);
+        return finishedTasksMap;
+    }
+
+    public void setFinishedTasksMap(List<Container> containerList) {
+        finishedTasksMap.clear();
+        for (Container cont: containerList) {
+            if (cont.getVm().getId() == getId()) {
+                for (ServerlessRequest task: ((ServerlessContainer) cont).getfinishedTasks()) {
+                    addToFinishedTaskMap(task);
+                }
             }
         }
-        return finishedTasksMap;
     }
 }

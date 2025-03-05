@@ -94,7 +94,7 @@ public class EnsureSimulation {
 
             saveResultsAsCSV();
             // printRequestList(finishedRequests);
-            // printContainerList(destroyedContainers);
+             printContainerList(controller.getContainerList());
             // printContainerList(containerList);
             if (Constants.MONITORING) {
 //        printVmUpDownTime();

@@ -4,6 +4,7 @@ import org.cloudbus.cloudsim.container.containerProvisioners.ContainerBwProvisio
 import org.cloudbus.cloudsim.container.containerProvisioners.ContainerPe;
 import org.cloudbus.cloudsim.container.containerProvisioners.ContainerRamProvisioner;
 import org.cloudbus.cloudsim.container.core.Container;
+import org.cloudbus.cloudsim.container.lists.ContainerList;
 import org.cloudbus.cloudsim.container.schedulers.ContainerScheduler;
 
 import java.util.ArrayList;
@@ -54,36 +55,24 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
     }
 
     public ArrayList<ServerlessContainer> getWarmContainers(ServerlessRequest request) {
-        List<Container> containers = getFunctionContainerMap().get(request.getRequestFunctionId());
+        List<Container> vmContainers = getContainerList();
         ArrayList<ServerlessContainer> warmContainers = new ArrayList<>();
-        if (containers != null) {
-            for (Container container : containers) {
-                if (((ServerlessContainer) container).getIdling()) { warmContainers.add((ServerlessContainer) container); }
+        for (Container container : vmContainers) {
+            if (
+                    ((ServerlessContainer) container).getType().equals(request.getRequestFunctionId()) &&
+                            ((ServerlessContainer) container).getRunningTasks().size() == 0 &&
+                            ((ServerlessContainer) container).getfinishedTasks().size() > 0 ) {
+                warmContainers.add((ServerlessContainer) container);
             }
         }
         return warmContainers;
     }
 
     public int getFunctionCapacity(String functionId) {
-        List<Container> containers = getFunctionContainerMap().get(functionId);
+        List<Container> readyContainers = getFunctionContainerMap().get(functionId);
+        List<Container> pendingContainers = getFunctionContainerMapPending().get(functionId);
         int size  = 0;
-        if (containers != null) { size = containers.size(); }
-        int capacity = Math.max(getPeList().size() - size, 0);
-        int state = getState();
-        if (state == Constants.ENSURE_STATE_WARNING) {
-            return Math.min(capacity, 1);
-        } else if (state == Constants.ENSURE_STATE_UNSAFE) { return 0;}
-        else {
-            return capacity;
-        }
-    }
-
-    public int getFunctionCapacity(ServerlessRequest request) {
-        if (request == null) { return getPeList().size(); }
-        List<Container> readyContainers = getFunctionContainerMap().get(request.getRequestFunctionId());
-        List<Container> pendingContainers = getFunctionContainerMapPending().get(request.getRequestFunctionId());
-        int size  = 0;
-        if (readyContainers != null) { size += readyContainers.size(); }
+        if (readyContainers != null) { size = readyContainers.size(); }
         if (pendingContainers != null) { size += pendingContainers.size(); }
         int capacity = Math.max(getPeList().size() - size, 0);
         int state = getState();

@@ -114,7 +114,9 @@ public class RequestLoadBalancer {
             case "ENSURE": {
                 for (int x = 1; x <= broker.getVmsCreatedList().size(); x++) {
                     EnsureServerlessInvoker vm = (EnsureServerlessInvoker) (ContainerVmList.getById(broker.getVmsCreatedList(), x));
+
                     assert vm != null;
+                    vm.setFinishedTasksMap(broker.getContainerList());
                     if (vm.getState() == Constants.ENSURE_STATE_UNSAFE) continue;
                     for (ServerlessContainer cont : vm.getWarmContainers(task)) {
                         ServerlessRequestScheduler clScheduler = (ServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
@@ -134,7 +136,7 @@ public class RequestLoadBalancer {
                         }
                     }
 
-                    int capacity = vm.getFunctionCapacity(task);
+                    int capacity = vm.getFunctionCapacity(task.getRequestFunctionId());
                     if (capacity > 0) {
                         broker.toSubmitOnContainerCreation.add(task);
                         ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), x);
