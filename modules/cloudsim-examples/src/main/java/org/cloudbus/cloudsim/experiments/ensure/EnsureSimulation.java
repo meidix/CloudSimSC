@@ -95,6 +95,8 @@ public class EnsureSimulation {
             saveResultsAsCSV();
             // printRequestList(finishedRequests);
              printContainerList(controller.getContainerList());
+             Log.printLine(controller.getContainersCreatedList().size());
+             Log.printLine(controller.getContainersDestroyedList().size());
             // printContainerList(containerList);
             if (Constants.MONITORING) {
 //        printVmUpDownTime();
@@ -131,6 +133,7 @@ public class EnsureSimulation {
                 DecimalFormat dft = new DecimalFormat("####.##");
 
                 for (ServerlessRequest request : requestList) {
+                    if (!request.getSuccess()) {continue;}
                     // Extract relevant request data
                     int requestId = request.getCloudletId();
                     String functionId =  request.getRequestFunctionId();
@@ -180,8 +183,8 @@ public class EnsureSimulation {
 
         long fileSize = 10L;
         long outputSize = 10L;
-        double cpuShareReq = 0.8d;
-        double memShareReq = 0.8d;
+        double cpuShareReq = 1.0d;
+        double memShareReq = 1.0d;
         double arrivalTime;
         String functionID;
         long requestLength;

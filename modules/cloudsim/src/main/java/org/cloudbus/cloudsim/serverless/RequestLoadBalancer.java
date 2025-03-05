@@ -48,6 +48,7 @@ public class RequestLoadBalancer {
 
     public void routeRequest(ServerlessRequest request){
         if (request.retry > Constants.MAX_RESCHEDULE_TRIES){
+            System.out.println("================================================================");
             broker.getCloudletList().remove(request);
             request.setSuccess(false);
             broker.getCloudletReceivedList().add(request);
@@ -114,35 +115,44 @@ public class RequestLoadBalancer {
             case "ENSURE": {
                 for (int x = 1; x <= broker.getVmsCreatedList().size(); x++) {
                     EnsureServerlessInvoker vm = (EnsureServerlessInvoker) (ContainerVmList.getById(broker.getVmsCreatedList(), x));
-
                     assert vm != null;
                     vm.setFinishedTasksMap(broker.getContainerList());
                     if (vm.getState() == Constants.ENSURE_STATE_UNSAFE) continue;
-                    for (ServerlessContainer cont : vm.getWarmContainers(task)) {
-                        ServerlessRequestScheduler clScheduler = (ServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
-                        if (clScheduler.isSuitableForRequest(task, cont)) {
-                            clScheduler.setTotalCurrentAllocatedRamForRequests(task);
-                            clScheduler.setTotalCurrentAllocatedMipsShareForRequests(task);
-                            Log.printLine(String.format("Using idling container: container #%s", cont.getId()));
-                            task.setContainerId(cont.getId());
-                            broker.addToVmTaskMap(task, vm);
-                            cont.setRunningTask(task);
-                            cont.setIdling(false);
-                            cont.setIdleStartTime(0);
-                            broker.setFunctionVmMap(vm, task.getRequestFunctionId());
-                            broker.requestSubmitClock = CloudSim.clock();
-                            broker.submitRequestToDC(task, x, 0, cont.getId());
-                            return true;
+                    if (vm.getFunctionContainerMap().containsKey(task.getRequestFunctionId())) {
+                        contTypeExists = true;
+                        for (Container container: vm.getFunctionContainerMap().get(task.getRequestFunctionId())) {
+                            ServerlessContainer cont = (ServerlessContainer) (container);
+                            ServerlessRequestScheduler clScheduler = (ServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
+                            if (clScheduler.isSuitableForRequest(task, cont)) {
+                                clScheduler.setTotalCurrentAllocatedRamForRequests(task);
+                                clScheduler.setTotalCurrentAllocatedMipsShareForRequests(task);
+                                Log.printLine(String.format("Using idling container: container #%s", cont.getId()));
+
+                                task.setContainerId(cont.getId());
+                                broker.addToVmTaskMap(task, vm);
+                                cont.setRunningTask(task);
+                                cont.setIdling(false);
+                                cont.setIdleStartTime(0);
+                                broker.setFunctionVmMap(vm, task.getRequestFunctionId());
+                                broker.requestSubmitClock = CloudSim.clock();
+                                broker.submitRequestToDC(task, x, 0, cont.getId());
+                                return true;
+                            }
                         }
                     }
+
 
                     int capacity = vm.getFunctionCapacity(task.getRequestFunctionId());
                     if (capacity > 0) {
                         broker.toSubmitOnContainerCreation.add(task);
-                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), x);
+                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
                         broker.requestSubmitClock = CloudSim.clock();
                         return true;
                     }
+                }
+                if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
+                    broker.sendFunctionRetryRequest(task);
+                    task.retry++;
                 }
                 return false;
             }
