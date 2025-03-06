@@ -25,6 +25,25 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     public void setFunctionIsoResponseTimes(HashMap<String, Double> functionIsoResponseTimes) { this.functionIsoResponseTimes = functionIsoResponseTimes;}
 
+
+    public double getFunctionLatencyMovingAverage(String functionId) {
+        ArrayList<ServerlessRequest> finishedRequests = getFinishedTaskMap().get(functionId);
+        if (finishedRequests == null) {
+            return functionIsoResponseTimes.get(functionId);
+        }
+        int start = Math.max(finishedRequests.size() - Constants.ENSURE_RESPONSE_TIME_WINDOW_SIZE, 0);
+        return finishedRequests
+                .subList(start, finishedRequests.size())
+                .stream()
+                .mapToDouble(req -> req.getFinishTime() - req.getExecStartTime())
+                .average()
+                .orElse(0.0);
+    }
+
+    public double getFunctionAllowableLatency(String functionId) {
+        return functionIsoResponseTimes.get(functionId) * Constants.ENSURE_LATENCY_WARNING_THRESHOLD;
+    }
+
     public int getState() {
         int current = Constants.ENSURE_STATE_SAFE;
         int newState;

@@ -120,15 +120,15 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 1;
-    public static final int NUMBER_VMS = 8;
+    public static final int NUMBER_HOSTS = 4;
+    public static final int NUMBER_VMS = 32;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
@@ -160,6 +160,7 @@ public class Constants {
     * */
     public static final int ENSURE_RESPONSE_TIME_WINDOW_SIZE = 10;
     public static final double ENSURE_LATENCY_THRESHOLD = 1.15;
+    public static final double ENSURE_LATENCY_WARNING_THRESHOLD = 1.1;
     public static final int ENSURE_STATE_SAFE = 1;
     public static final int ENSURE_STATE_PRE_WARMING = 2;
     public static final int ENSURE_STATE_WARNING = 3;
