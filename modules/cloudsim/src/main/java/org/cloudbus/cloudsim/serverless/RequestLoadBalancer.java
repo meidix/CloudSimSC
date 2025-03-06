@@ -48,7 +48,6 @@ public class RequestLoadBalancer {
 
     public void routeRequest(ServerlessRequest request){
         if (request.retry > Constants.MAX_RESCHEDULE_TRIES){
-            System.out.println("================================================================");
             broker.getCloudletList().remove(request);
             request.setSuccess(false);
             broker.getCloudletReceivedList().add(request);

@@ -29,16 +29,16 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
         int current = Constants.ENSURE_STATE_SAFE;
         int newState;
         for (Map.Entry<String, ArrayList<ServerlessRequest>> entry: getFinishedTaskMap().entrySet()) {
-            double allowableRange = functionIsoResponseTimes.get(entry.getKey()) * (1 - Constants.ENSURE_LATENCY_THRESHOLD);
+            double allowableRange = functionIsoResponseTimes.get(entry.getKey()) * (Constants.ENSURE_LATENCY_THRESHOLD - 1);
             int start = Math.max(entry.getValue().size() - Constants.ENSURE_RESPONSE_TIME_WINDOW_SIZE, 0);
             double movingAverage = entry
                     .getValue()
                     .subList(start, entry.getValue().size())
                     .stream()
-                    .mapToDouble(req -> req.getFinishTime() - req.getArrivalTime())
+                    .mapToDouble(req -> req.getFinishTime() - req.getExecStartTime())
                     .average()
                     .orElse(0.0);
-            if (movingAverage <= (allowableRange / 4)) {
+            if (movingAverage <= (allowableRange / 4) + functionIsoResponseTimes.get(entry.getKey())) {
                 newState =  Constants.ENSURE_STATE_SAFE;
             } else if (movingAverage <= (allowableRange / 2)) {
                 newState =  Constants.ENSURE_STATE_PRE_WARMING;
