@@ -281,7 +281,7 @@ public class EnsureSimulation {
         return controller;
     }
 
-    public static ServerlessDatacenter createDatacenter(String name) throws Exception {
+    public static EnsureServerlessDatacenter createDatacenter(String name) throws Exception {
         String arch = "x86";
         String os = "Linux";
         String vmm = "Xen";
@@ -309,7 +309,7 @@ public class EnsureSimulation {
                 time_zone, cost, costPerMem, costPerStorage,
                 costPerBw);
         /** Set datacenter monitoring to true if metrics monitoring is required **/
-        ServerlessDatacenter datacenter = new ServerlessDatacenter(name, characteristics, vmAllocationPolicy,
+        EnsureServerlessDatacenter datacenter = new EnsureServerlessDatacenter(name, characteristics, vmAllocationPolicy,
                 containerAllocationPolicy, new LinkedList<Storage>(), Constants.SCHEDULING_INTERVAL,
                 getExperimentName("SimTest1", String.valueOf(80)), logAddress,
                 Constants.VM_STARTTUP_DELAY, Constants.CONTAINER_STARTTUP_DELAY, Constants.MONITORING);

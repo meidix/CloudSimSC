@@ -1,12 +1,11 @@
 package org.cloudbus.cloudsim.serverless;
 
 import org.cloudbus.cloudsim.Cloudlet;
+import org.cloudbus.cloudsim.Log;
 import org.cloudbus.cloudsim.Storage;
-import org.cloudbus.cloudsim.container.core.Container;
-import org.cloudbus.cloudsim.container.core.ContainerDatacenterCharacteristics;
-import org.cloudbus.cloudsim.container.core.ContainerHost;
-import org.cloudbus.cloudsim.container.core.ContainerVm;
+import org.cloudbus.cloudsim.container.core.*;
 import org.cloudbus.cloudsim.container.resourceAllocators.ContainerVmAllocationPolicy;
+import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 
@@ -49,7 +48,6 @@ public class EnsureServerlessDatacenter extends ServerlessDatacenter {
                         Cloudlet cl = container.getContainerCloudletScheduler().getNextFinishedCloudlet();
                         if (cl != null) {
                             Map.Entry<Cloudlet, ContainerVm> data =  new AbstractMap.SimpleEntry<>(cl, vm);
-//                            Pair data = new Pair<>(cl, vm);
                             for(int x=0; x<((ServerlessInvoker)vm).getRunningRequestList().size();x++){
                                 if(((ServerlessInvoker)vm).getRunningRequestList().get(x)==(ServerlessRequest)cl){
                                     ((ServerlessInvoker)vm).getRunningRequestList().remove(x);

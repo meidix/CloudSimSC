@@ -105,10 +105,6 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
     @Override
     public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
         boolean isSuitable = super.isSuitableForContainer(container, vm);
-        List<ServerlessRequest> tasks = ((ServerlessContainer) container).getRunningTasks();
-        if (tasks == null) {
-            return isSuitable && ((EnsureServerlessInvoker) vm).getState() != Constants.ENSURE_STATE_UNSAFE;
-        }
         return isSuitable && ((EnsureServerlessInvoker) vm).getFunctionCapacity(((ServerlessContainer) container).getType()) > 0;
     }
 }
