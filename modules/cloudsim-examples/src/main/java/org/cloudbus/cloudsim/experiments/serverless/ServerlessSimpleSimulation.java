@@ -121,6 +121,8 @@ public class ServerlessSimpleSimulation {
 //        printVmUpDownTime();
         printVmUtilization();
         System.out.println("Number of Finished Requests: " +  finishedRequests.size());
+        System.out.println("Number of Containers Created: " + controller.getContainerList().size());
+        System.out.println("Number of Containers Destroyed: " + controller.getContainersDestroyedList().size());
       }
 
       // Writing the results to a file when the simulation is finished.
@@ -468,7 +470,7 @@ public class ServerlessSimpleSimulation {
 
   private static void printVmUtilization() {
     System.out.println("Average CPU utilization of vms: " + controller.getAverageResourceUtilization());
-    System.out.println("Average vm count: " + controller.getAverageVmCount());
+    System.out.println("Average vm count: " + Math.ceil(controller.getAverageVmCount()));
     System.out.println("Using exsiting cont: " + controller.exsitingContCount);
 
   }
