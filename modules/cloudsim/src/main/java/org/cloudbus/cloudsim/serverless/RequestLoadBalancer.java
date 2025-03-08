@@ -123,8 +123,7 @@ public class RequestLoadBalancer {
                             ServerlessContainer cont = (ServerlessContainer) (container);
                             ServerlessRequestScheduler clScheduler = (ServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
                             if (clScheduler.isSuitableForRequest(task, cont)) {
-                                clScheduler.setTotalCurrentAllocatedRamForRequests(task);
-                                clScheduler.setTotalCurrentAllocatedMipsShareForRequests(task);
+
                                 Log.printLine(String.format("Using idling container: container #%s", cont.getId()));
 
                                 task.setContainerId(cont.getId());

@@ -63,12 +63,12 @@ public class Constants {
      */
 
     public static final int VM_TYPES = 4;
-    public static final double[] VM_MIPS = new double[]{ 16000, 16000, 16000, 16000};
+    public static final double[] VM_MIPS = new double[]{ 2000, 2000, 2000, 2000};
     public static final int[] VM_PES = new int[]{8, 8, 8, 8};
     public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
     public static final int VM_BW = 200000;
     public static final int VM_SIZE = 30000;
-    public static final int CPU_HISTORY_LENGTH = 50;
+    public static final int CPU_HISTORY_LENGTH = 1000;
 
 
     /**
@@ -104,7 +104,7 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{256000, 256000, 25600};
+    public static final int[] HOST_MIPS = new int[]{4000, 4000, 4000};
     public static final int[] HOST_PES = new int[]{64, 64, 64};
     public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
     public static final int HOST_BW = 10000000;
@@ -120,15 +120,15 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 2;
-    public static final int NUMBER_VMS = 16;
+    public static final int NUMBER_HOSTS = 5;
+    public static final int NUMBER_VMS = 40;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
@@ -146,7 +146,7 @@ public class Constants {
     public static final String HOR_SCALING_LOGIC = "cpuThreshold";
     public static final String SCALING_TRIGGER_LOGIC = "cpuThreshold";
     public static final String CONTAINER_SELECTION_ALGO = "ENSURE";
-    public static final int MAX_RESCHEDULE_TRIES = 20;
+    public static final int MAX_RESCHEDULE_TRIES = 100;
     public static final boolean MONITORING = true;
     public static final int MAX_REPLICAS = 50;
 

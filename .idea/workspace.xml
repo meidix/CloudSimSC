@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="adding Ensure FnScale component in the EnsureAutoScaler">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added Auto Scaling and everything looks to be working just fine">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessDatacenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessDatacenter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +45,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.EnsureSimulation.executor": "Debug",
+    "Application.EnsureSimulation.executor": "Run",
     "Application.ServerlessSimpleSimulation.executor": "Debug",
     "Maven.cloudsim-package [clean,package].executor": "Run",
     "Maven.cloudsim-package [clean].executor": "Run",
@@ -307,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741267190648</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="added Auto Scaling and everything looks to be working just fine">
+      <option name="closed" value="true" />
+      <created>1741345204400</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1741345204400</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +341,8 @@
     <MESSAGE value="working on getting warm containers to work, everything else seems to work just fine" />
     <MESSAGE value="Finally got Ensure Scheduling to work, now moving forward to writing the AutoScaler" />
     <MESSAGE value="adding Ensure FnScale component in the EnsureAutoScaler" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding Ensure FnScale component in the EnsureAutoScaler" />
+    <MESSAGE value="added Auto Scaling and everything looks to be working just fine" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Auto Scaling and everything looks to be working just fine" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -353,11 +361,6 @@
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/Host.java</url>
           <line>132</line>
           <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/schedulers/ContainerSchedulerTimeSharedOverSubscription.java</url>
-          <line>84</line>
-          <option name="timeStamp" value="64" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="allocatedRam &gt; 0" language="JAVA" />
@@ -412,7 +415,39 @@
           <line>45</line>
           <option name="timeStamp" value="250" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="cont.getId() == 2" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
+          <line>124</line>
+          <option name="timeStamp" value="258" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="container.getId() == 2" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java</url>
+          <line>391</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="container.getId() == 2" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java</url>
+          <line>404</line>
+          <option name="timeStamp" value="261" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="cl.getContainerId() == 2" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessRequestScheduler.java</url>
+          <line>72</line>
+          <option name="timeStamp" value="262" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="container.getRam()" language="JAVA" />
+        <watch expression="clScheduler.getTotalCurrentAllocatedMipsShareForRequests()" language="JAVA" />
+        <watch expression="clScheduler.getTotalCurrentAllocatedRamForRequests()" language="JAVA" />
+        <watch expression="container.getfinishedTasks()" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

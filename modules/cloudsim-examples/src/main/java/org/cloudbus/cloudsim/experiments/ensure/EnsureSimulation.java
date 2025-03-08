@@ -90,12 +90,11 @@ public class EnsureSimulation {
 
             // Printing the results when the simulation is finished.
             List<ContainerCloudlet> finishedRequests = controller.getCloudletReceivedList();
-            double averageResourceUtilization = controller.getAverageResourceUtilization();
 
             saveResultsAsCSV();
             // printRequestList(finishedRequests);
              printContainerList(controller.getContainerList());
-             Log.printLine(controller.getContainersCreatedList().size());
+             Log.printLine(controller.getContainerList().size());
              Log.printLine(controller.getContainersDestroyedList().size());
             // printContainerList(containerList);
             if (Constants.MONITORING) {
@@ -106,7 +105,7 @@ public class EnsureSimulation {
 
             // Writing the results to a file when the simulation is finished.
 //       writeDataLineByLine(finishedRequests);
-            Log.printLine("ServerlessSimulationSimple finished!");
+            Log.printLine("EnsureSimulation finished!");
         } catch (Exception e) {
             e.printStackTrace();
             Log.printLine("Unwanted errors happen");
@@ -293,14 +292,6 @@ public class EnsureSimulation {
         double costPerBw = 0.0D;
 
         List<ContainerHost> hostList = createHostList(Constants.NUMBER_HOSTS);
-        // Select hosts to migrate
-//    HostSelectionPolicy hostSelectionPolicy = new HostSelectionPolicyFirstFit();
-        // Select vms to migrate
-//    PowerContainerVmSelectionPolicy vmSelectionPolicy = new PowerContainerVmSelectionPolicyMaximumUsage();
-        // Allocating host to vm
-//    ContainerVmAllocationPolicy vmAllocationPolicy = new PCVmAllocationPolicyMigrationAbstractHostSelection(hostList,
-//        vmSelectionPolicy,
-//        hostSelectionPolicy, Constants.OVER_UTILIZATION_THRESHOLD, Constants.UNDER_UTILIZATION_THRESHOLD);
         ContainerVmAllocationPolicy vmAllocationPolicy = new PowerContainerVmAllocationSimple(hostList);
 //     Allocating vms to container
         FunctionScheduler containerAllocationPolicy = new EnsureFunctionScheduler();
@@ -387,8 +378,7 @@ public class EnsureSimulation {
 
     private static void printVmUtilization() {
         System.out.println("Average CPU utilization of vms: " + controller.getAverageResourceUtilization());
-        System.out.println("Average vm count: " + controller.getAverageVmCount());
-        System.out.println("Using exsiting cont: " + controller.exsitingContCount);
+        System.out.println("Average vm count: " + Math.ceil(controller.getAverageVmCount()));
 
     }
 }
