@@ -3,6 +3,7 @@ package org.cloudbus.cloudsim.serverless;
 import org.cloudbus.cloudsim.container.containerProvisioners.ContainerBwProvisioner;
 import org.cloudbus.cloudsim.container.containerProvisioners.ContainerPe;
 import org.cloudbus.cloudsim.container.containerProvisioners.ContainerRamProvisioner;
+import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.schedulers.ContainerScheduler;
 import org.cloudbus.cloudsim.core.CloudSim;
 
@@ -31,13 +32,13 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
         double ema = 0;
         // Start with the first response time in the window as the initial EMA value.
         int start = requests.size() - windowSize;
-        ema = requests.get(start).getFinishTime() - requests.get(start).getArrivalTime();
+        ema = requests.get(start).getFinishTime() - requests.get(start).getExecStartTime();
         double alpha = Constants.MAAS_ALPHA;
 
         // Process the requests in chronological order (oldest to newest within the window)
         for (int i = start + 1; i < requests.size(); i++) {
             ServerlessRequest request = requests.get(i);
-            double latest = request.getFinishTime() - request.getArrivalTime();
+            double latest = request.getFinishTime() - request.getExecStartTime();
             ema = alpha * latest + (1 - alpha) * ema;
         }
         return ema;
@@ -71,7 +72,7 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
         double sum = 0;
         for (int i = requests.size() - windowSize; i < requests.size(); i++) {
             ServerlessRequest request = requests.get(i);
-            sum += request.getFinishTime() - request.getArrivalTime();
+            sum += request.getFinishTime() - request.getExecStartTime();
         }
         return sum / windowSize;
     }
@@ -119,5 +120,11 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
         }
     }
 
+    @Override
+    public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
+        int ema = ((MaasServerlessInvoker) vm).getNormalizedEMA(((ServerlessContainer) container).getType());
+        return ( ema < 3 && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
+                .isSuitableForContainer(container, container.getCurrentRequestedBw()));
+    }
 
 }
