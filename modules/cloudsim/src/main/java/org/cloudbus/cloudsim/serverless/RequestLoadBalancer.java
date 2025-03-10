@@ -5,7 +5,7 @@ import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.lists.ContainerVmList;
 import org.cloudbus.cloudsim.core.CloudSim;
 
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -154,6 +154,97 @@ public class RequestLoadBalancer {
                 }
                 return false;
             }
+            case "MAAS": {
+                List<MaasServerlessInvoker> warmInvokers = new ArrayList<MaasServerlessInvoker>();
+                boolean busyInvokers = false;
+                List<Integer> EMAList = new ArrayList<>();
+                List<Integer> SMAList = new ArrayList<>();
+                for (int x = 1; x <= broker.getVmsCreatedList().size(); x++) {
+                   MaasServerlessInvoker vm = ContainerVmList.getById(broker.getVmsCreatedList(), x);
+                   assert vm != null;
+                   EMAList.add(vm.getNormalizedEMA(task.getRequestFunctionId()));
+                   SMAList.add(vm.getNormalizedSMA(task.getRequestFunctionId()));
+                   if (vm.getFunctionContainerMap().containsKey(task.getRequestFunctionId())) {
+                        for (Container container: vm.getFunctionContainerMap().get(task.getRequestFunctionId())) {
+                            ServerlessContainer cont = (ServerlessContainer) container;
+                            MaasServerlessRequestScheduler clScheduler = (MaasServerlessRequestScheduler) (cont.getContainerCloudletScheduler());
+                            if (clScheduler.isSuitableForRequest(task, cont)) {
+                                warmInvokers.add(vm);
+                            } else {
+                                busyInvokers = true;
+                            }
+                        }
+                   }
+                }
+                int clusterEMA = 0;
+                int clusterSMA = 0;
+
+                /*
+                * Cluster Level EMA Calculation
+                * */
+                Collections.sort(EMAList);
+                if (!EMAList.isEmpty()) {
+                    if (EMAList.size() % 2 == 0) {
+                        clusterEMA = EMAList.get(EMAList.size() / 2);
+                    } else {
+                        clusterEMA = (EMAList.get(EMAList.size() / 2 - 1) + EMAList.get(EMAList.size() / 2)) / 2;
+                    }
+                }
+
+                /*
+                * Cluster Level SMA Calculation
+                * */
+                Collections.sort(SMAList);
+                if (!SMAList.isEmpty()) {
+                    if (SMAList.size() % 2 == 0) {
+                        clusterSMA = SMAList.get(EMAList.size() / 2);
+                    } else {
+                        clusterSMA = (SMAList.get(EMAList.size() / 2 - 1) + SMAList.get(EMAList.size() / 2)) / 2;
+                    }
+                }
+
+                MaasServerlessInvoker selectedVm = null;
+                boolean warmSelected = false;
+                if (!warmInvokers.isEmpty()) {
+                    warmInvokers.sort(new Comparator<MaasServerlessInvoker>() {
+
+                        @Override
+                        public int compare(MaasServerlessInvoker vm1, MaasServerlessInvoker vm2) {
+                            double vm1Util = vm1.getTotalUtilizationOfCpu(CloudSim.clock());
+                            double vm2Util = vm2.getTotalUtilizationOfCpu(CloudSim.clock());
+                            return Double.compare(vm2Util, vm1Util);
+                        }
+                    });
+                    Iterator<MaasServerlessInvoker> warmIterator = warmInvokers.iterator();
+                    while (warmIterator.hasNext()) {
+                        selectedVm = warmIterator.next();
+                        if (selectedVm.getNormalizedEMA() < 3) {
+                            for (Container container: selectedVm.getFunctionContainerMap().get(task.getRequestFunctionId())) {
+                                MaasServerlessRequestScheduler clScheduler = (MaasServerlessRequestScheduler) (container.getContainerCloudletScheduler());
+                                if (clScheduler.isSuitableForRequest(task, (ServerlessContainer) container)) {
+                                    task.setContainerId(((ServerlessContainer) container).getId());
+                                    broker.addToVmTaskMap(task, selectedVm);
+                                    ((ServerlessContainer) container).setRunningTask(task);
+                                    ((ServerlessContainer) container).setIdling(false);
+                                    ((ServerlessContainer) container).setIdleStartTime(0.0);
+                                    broker.setFunctionVmMap(selectedVm, task.getRequestFunctionId());
+                                    broker.requestSubmitClock = CloudSim.clock();
+                                    broker.submitRequestToDC(task, selectedVm.getId(), 0, ((ServerlessContainer) container).getId());
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (busyInvokers && clusterEMA < clusterSMA) {
+                    if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
+                        broker.sendFunctionRetryRequest(task);
+                        task.retry++;
+                    }
+                    return false;
+                }
+            }
+            break;
         }
 
         if(Constants.CONTAINER_CONCURRENCY && Constants.FUNCTION_HORIZONTAL_AUTOSCALING){

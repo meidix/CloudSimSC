@@ -167,4 +167,12 @@ public class Constants {
     public static final int ENSURE_STATE_UNSAFE = 4;
 
 
+    /*
+    * MAAS related settings
+    * */
+    public static final int MAAS_WINDOW_SIZE = 100;
+    public static final double MAAS_ALPHA = (double) 2 / 101;
+    public static final double MAAS_SLO = 1.15;
+
+
 }
