@@ -120,15 +120,15 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 5;
-    public static final int NUMBER_VMS = 40;
+    public static final int NUMBER_HOSTS = 1;
+    public static final int NUMBER_VMS = 8;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
@@ -138,14 +138,14 @@ public class Constants {
     public static final double UNDER_UTILIZATION_THRESHOLD = 0.70;
     public static final double CONTAINER_SCALE_CPU_THRESHOLD = 0.40;
     public static final boolean CONTAINER_CONCURRENCY = false;
-    public static final boolean FUNCTION_AUTOSCALING = true;
-    public static final boolean FUNCTION_HORIZONTAL_AUTOSCALING = true;
+    public static final boolean FUNCTION_AUTOSCALING = false;
+    public static final boolean FUNCTION_HORIZONTAL_AUTOSCALING = false;
     public static final boolean FUNCTION_VERTICAL_AUTOSCALING = false;
     public static final boolean SCALE_PER_REQUEST = false;
     public static final String VM_SELECTION_ALGO = "RR";
     public static final String HOR_SCALING_LOGIC = "cpuThreshold";
     public static final String SCALING_TRIGGER_LOGIC = "cpuThreshold";
-    public static final String CONTAINER_SELECTION_ALGO = "ENSURE";
+    public static final String CONTAINER_SELECTION_ALGO = "MAAS";
     public static final int MAX_RESCHEDULE_TRIES = 100;
     public static final boolean MONITORING = true;
     public static final int MAX_REPLICAS = 50;

@@ -12,20 +12,19 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     private HashMap<String, Double> isoResponseTimes;
 
-    public MaasServerlessInvoker(int id, int userId, double mips, float ram, long bw, long size, String vmm, ContainerScheduler containerScheduler, ContainerRamProvisioner containerRamProvisioner, ContainerBwProvisioner containerBwProvisioner, List<? extends ContainerPe> peList, double schedulingInterval) {
+    public MaasServerlessInvoker(int id, int userId, double mips, float ram, long bw, long size, String vmm, ContainerScheduler containerScheduler, ContainerRamProvisioner containerRamProvisioner, ContainerBwProvisioner containerBwProvisioner, List<? extends ContainerPe> peList, double schedulingInterval, HashMap<String, Double> isoResponseTimes) {
         super(id, userId, mips, ram, bw, size, vmm, containerScheduler, containerRamProvisioner, containerBwProvisioner, peList, schedulingInterval);
-        isoResponseTimes = new HashMap<>();
+        setIsoResponseTimes(isoResponseTimes);
     }
 
-    public void setIsolationResponseTimes(HashMap<String, Double> isolationResponseTimes) {
-        isoResponseTimes = isolationResponseTimes;
+    protected void setIsoResponseTimes(HashMap<String, Double> isoResponseTimes) {
+        this.isoResponseTimes = isoResponseTimes;
     }
-
 
     public double getEMA(String functionId) {
         ArrayList<ServerlessRequest> requests = finishedTasksMap.get(functionId);
         if (requests == null || requests.isEmpty()) {
-            return 0; // or a default value if no requests are present
+            return isoResponseTimes.get(functionId); // or a default value if no requests are present
         }
 
         int windowSize = Math.min(Constants.MAAS_WINDOW_SIZE, requests.size());
@@ -108,12 +107,12 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
     }
 
     private int normalizeValue(double isoResponseTime, double value) {
-        double latencyRange = isoResponseTime * (1 - Constants.MAAS_SLO);
-        if (value <= (latencyRange / 3)) {
+        double latencyRange = isoResponseTime * (Constants.MAAS_SLO - 1);
+        if (value <= (latencyRange / 3) + isoResponseTime) {
             return 1;
-        } else if (value <= ( 2 * (latencyRange / 3))) {
+        } else if (value <= ( 2 * (latencyRange / 3)) + isoResponseTime) {
             return 2;
-        } else if (value <= latencyRange) {
+        } else if (value <= latencyRange + isoResponseTime) {
             return 3;
         } else {
             return 4;
