@@ -55,6 +55,8 @@ public class EnsureServerlessDatacenter extends ServerlessDatacenter {
                             }
                             ((EnsureServerlessInvoker) vm).addToFinishedTaskMap((ServerlessRequest)cl);
                             decrementFunctionInflightRequests(((ServerlessRequest) cl).getRequestFunctionId());
+//                            ((ServerlessContainer) container).setIdling(true);
+//                            ((ServerlessContainer) container).setIdleStartTime(CloudSim.clock());
                             sendNow(cl.getUserId(), CloudSimTags.CLOUDLET_RETURN, data);
                         }
                     }

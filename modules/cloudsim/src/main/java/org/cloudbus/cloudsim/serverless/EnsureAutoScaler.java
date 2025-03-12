@@ -84,7 +84,7 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                 if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
                     inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey());
                 }
-                int numberOfContainers = (int) Math.ceil(Math.sqrt(inflights));
+                int numberOfContainers = (int) Math.floor(Math.sqrt(inflights)) + inflights;
                 int containerGap = numberOfContainers - entry.getValue().get("container_count");
                 if (containerGap > 0) {
                     for (int i = 0; i < containerGap; i++) {
