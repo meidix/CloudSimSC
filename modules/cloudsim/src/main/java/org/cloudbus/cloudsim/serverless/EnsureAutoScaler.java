@@ -47,13 +47,16 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                         if (!globalFunctionContainerMap.containsKey(entry.getKey())) {
                             HashMap<String, Integer> fnMap = new HashMap<>();
                             fnMap.put("container_count", entry.getValue().size());
+                            fnMap.put("container_count_ready", entry.getValue().size());
                             fnMap.put("container_MIPS", (int) entry.getValue().get(0).getMips());
                             fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
                             fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
+                            fnMap.put("container_count_pending", 0);
                             globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         } else {
                             HashMap<String, Integer> fnMap = (HashMap<String, Integer>) globalFunctionContainerMap.get(entry.getKey());
                             fnMap.put("container_count", fnMap.get("container_count") + entry.getValue().size());
+                            fnMap.put("container_count_ready", fnMap.get("container_count_ready") + entry.getValue().size());
                             globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         }
                     }
@@ -61,12 +64,15 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                         if (!globalFunctionContainerMap.containsKey(entry.getKey())) {
                             HashMap<String, Integer> fnMap = new HashMap<>();
                             fnMap.put("container_count", entry.getValue().size());
+                            fnMap.put("container_count_ready", 0);
+                            fnMap.put("container_count_pending", entry.getValue().size());
                             fnMap.put("container_MIPS", (int) entry.getValue().get(0).getMips());
                             fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
                             fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
                             globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         } else {
                             HashMap<String, Integer> fnMap = (HashMap<String, Integer>) globalFunctionContainerMap.get(entry.getKey());
+                            fnMap.put("container_count_pending", fnMap.get("container_count_pending") + entry.getValue().size());
                             fnMap.put("container_count", fnMap.get("container_count") + entry.getValue().size());
                             globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         }
@@ -78,8 +84,8 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                 if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
                     inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey());
                 }
-                int numberOfContainers = (int) Math.floor(Math.sqrt(inflights));
-                int containerGap = numberOfContainers - entry.getValue().size();
+                int numberOfContainers = (int) Math.ceil(Math.sqrt(inflights));
+                int containerGap = numberOfContainers - entry.getValue().get("container_count");
                 if (containerGap > 0) {
                     for (int i = 0; i < containerGap; i++) {
                         String[] dt = new String[5] ;
