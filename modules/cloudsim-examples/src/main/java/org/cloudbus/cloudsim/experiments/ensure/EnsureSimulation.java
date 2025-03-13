@@ -80,7 +80,7 @@ public class EnsureSimulation {
             createRequests();
 
             // the time at which the simulation has to be terminated.
-            CloudSim.terminateSimulation(5000.00);
+            CloudSim.terminateSimulation(200.00);
 
             // Starting the simualtion
             CloudSim.startSimulation();

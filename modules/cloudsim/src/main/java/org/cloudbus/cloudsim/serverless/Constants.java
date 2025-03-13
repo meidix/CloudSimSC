@@ -53,7 +53,7 @@ public class Constants {
     public static final int NUM_TASKS = 50;
     public static final double CPU_USAGE_MONITORING_INTERVAL = 0.01;
 
-    public static final double AUTO_SCALING_INTERVAL = 5;
+    public static final double AUTO_SCALING_INTERVAL = 11;
     public static final double FUNCTION_PLACEMENT_TIME = 0.002;
     public static final double MINIMUM_INTERVAL_BETWEEN_TWO_CLOUDLET_SUBMISSIONS = 0.001;
     public static final double CLOUDLET_CREATING_INTERVAL = 50.0;
