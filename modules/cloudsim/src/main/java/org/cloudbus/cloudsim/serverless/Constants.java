@@ -120,8 +120,8 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 5;
-    public static final int NUMBER_VMS = 40;
+    public static final int NUMBER_HOSTS = 6;
+    public static final int NUMBER_VMS = 48;
     public static final int NUMBER_requestS = 5;
 
     /**

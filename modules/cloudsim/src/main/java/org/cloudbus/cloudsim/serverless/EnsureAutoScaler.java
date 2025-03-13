@@ -80,63 +80,21 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                 }
             }
             for (Map.Entry<String, Map<String, Integer>> entry: globalFunctionContainerMap.entrySet()) {
-                int inflights = 0;
-                if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
-                    inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey());
-                }
+                int inflights = entry.getValue().get("container_count_ready");
                 int numberOfContainers = (int) Math.floor(Math.sqrt(inflights)) + inflights;
                 int containerGap = numberOfContainers - entry.getValue().get("container_count");
-                if (containerGap > 0) {
-                    for (int i = 0; i < containerGap; i++) {
-                        String[] dt = new String[5] ;
-                        dt[0] = Integer.toString(userId);
-                        dt[1] = entry.getKey();
-                        dt[2] = Double.toString(entry.getValue().get("container_MIPS"));
-                        dt[3] = Double.toString(entry.getValue().get("container_ram"));
-                        dt[4] = Double.toString(entry.getValue().get("container_PES"));
-
-                        getServerlessDatacenter().sendScaledContainerCreationRequest(dt);
-                    }
-                } else {
-                    hostList = getServerlessDatacenter().getVmAllocationPolicy().getContainerHostList();
-                    outter:
-                    for (int i = hostList.size() - 1; i >= 0; i--) {
-                        ContainerHost host = hostList.get(i);
-                        for (int j = host.getVmList().size() - 1; j >= 0; j--) {
-                            EnsureServerlessInvoker vm = (EnsureServerlessInvoker) host.getVmList().get(j);
-                            if (vm.getFunctionContainerMap().containsKey(entry.getKey())) {
-                                for (Container cont: vm.getFunctionContainerMap().get(entry.getKey())) {
-                                    ServerlessContainer container = (ServerlessContainer) cont;
-                                    if (container.getIdling() || container.getRunningTasks().isEmpty()) {
-                                        container.setIdleStartTime(CloudSim.clock());
-                                        getServerlessDatacenter().getContainersToDestroy().add(container);
-                                        containerGap++;
-                                        if (containerGap == 0) {
-                                            break outter;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if (containerGap < 0) {
+                    containerGap = 0;
                 }
-                outter:
-                for (ContainerHost host: hostList) {
-                    for (ContainerVm machine: host.getVmList()) {
-                        EnsureServerlessInvoker vm = (EnsureServerlessInvoker) machine;
-                        if (vm.getFunctionContainerMap().containsKey(entry.getKey())) {
-                            for (Container cont: vm.getFunctionContainerMap().get(entry.getKey())) {
-                                ServerlessContainer container = (ServerlessContainer) cont;
-                                if (container.getIdling() || container.getRunningTasks().isEmpty()) {
-                                    if (numberOfContainers == 0) {
-                                        break outter;
-                                    }
-                                    container.setIdleStartTime(0);
-                                    numberOfContainers--;
-                                }
-                            }
-                        }
-                    }
+                for (int i = 0; i < containerGap; i++) {
+                    String[] dt = new String[5] ;
+                    dt[0] = Integer.toString(userId);
+                    dt[1] = entry.getKey();
+                    dt[2] = Double.toString(entry.getValue().get("container_MIPS"));
+                    dt[3] = Double.toString(entry.getValue().get("container_ram"));
+                    dt[4] = Double.toString(entry.getValue().get("container_PES"));
+
+                    getServerlessDatacenter().sendScaledContainerCreationRequest(dt);
                 }
             }
         }
