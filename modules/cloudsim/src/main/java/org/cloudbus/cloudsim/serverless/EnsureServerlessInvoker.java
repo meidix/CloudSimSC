@@ -104,8 +104,8 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     @Override
     public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
-        boolean isSuitable = super.isSuitableForContainer(container, vm);
-//        return isSuitable && ((EnsureServerlessInvoker) vm).getFunctionCapacity(((ServerlessContainer) container).getType()) > 0;
-        return ((EnsureServerlessInvoker) vm).getFunctionCapacity(((ServerlessContainer) container).getType()) > 0;
+        boolean hasEnoughRam = (getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
+                .isSuitableForContainer(container, container.getCurrentRequestedBw()));
+        return ((EnsureServerlessInvoker) vm).getFunctionCapacity(((ServerlessContainer) container).getType()) > 0 && hasEnoughRam;
     }
 }

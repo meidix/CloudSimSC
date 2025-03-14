@@ -53,7 +53,7 @@ public class Constants {
     public static final int NUM_TASKS = 50;
     public static final double CPU_USAGE_MONITORING_INTERVAL = 0.01;
 
-    public static final double AUTO_SCALING_INTERVAL = 5;
+    public static final double AUTO_SCALING_INTERVAL = 11;
     public static final double FUNCTION_PLACEMENT_TIME = 0.002;
     public static final double MINIMUM_INTERVAL_BETWEEN_TWO_CLOUDLET_SUBMISSIONS = 0.001;
     public static final double CLOUDLET_CREATING_INTERVAL = 50.0;
@@ -120,15 +120,16 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 2;
-    public static final int NUMBER_VMS = 16;
+    public static final int NUMBER_HOSTS = 4;
+    public static final int NUMBER_VMS = 32;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/hybrid-single.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**

@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added The Load Balancer for MAAS">
-      <change afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" afterDir="false" />
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="got everything working here. Time to thouroughly test">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="sim/ensure" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,14 +46,13 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.EnsureSimulation.executor": "Run",
-    "Application.MaasSimulation.executor": "Run",
     "Application.ServerlessSimpleSimulation.executor": "Debug",
     "Maven.cloudsim-package [clean,package].executor": "Run",
     "Maven.cloudsim-package [clean].executor": "Run",
     "Maven.cloudsim-package [package].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "sim/bdsm",
+    "git-widget-placeholder": "sim/ensure",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/meidix/Documents/UNI/Thesis/experiments/CloudSimServerlessComputing",
     "node.js.detected.package.eslint": "true",
@@ -70,26 +70,13 @@
       <recent name="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/serverless/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MaasSimulation">
+  <component name="RunManager" selected="Application.EnsureSimulation">
     <configuration name="EnsureSimulation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.cloudbus.cloudsim.experiments.ensure.EnsureSimulation" />
       <module name="cloudsim-examples" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.cloudbus.cloudsim.experiments.ensure.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MaasSimulation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.cloudbus.cloudsim.experiments.maas.MaasSimulation" />
-      <module name="cloudsim-examples" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.cloudbus.cloudsim.experiments.maas.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -119,7 +106,6 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MaasSimulation" />
         <item itemvalue="Application.EnsureSimulation" />
         <item itemvalue="Application.ServerlessSimpleSimulation" />
       </list>
@@ -159,6 +145,7 @@
       <workItem from="1740928715932" duration="37783000" />
       <workItem from="1741099690973" duration="6796000" />
       <workItem from="1741185580790" duration="5143000" />
+      <workItem from="1741707216476" duration="2998000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
@@ -328,15 +315,23 @@
       <option name="project" value="LOCAL" />
       <updated>1741345204400</updated>
     </task>
-    <task id="LOCAL-00022" summary="added The Load Balancer for MAAS">
+    <task id="LOCAL-00022" summary="fix">
       <option name="closed" value="true" />
-      <created>1741614643721</created>
+      <created>1741789212318</created>
       <option name="number" value="00022" />
       <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
-      <updated>1741614643721</updated>
+      <updated>1741789212318</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="got everything working here. Time to thouroughly test">
+      <option name="closed" value="true" />
+      <created>1741885278527</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1741885278527</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,8 +359,9 @@
     <MESSAGE value="Finally got Ensure Scheduling to work, now moving forward to writing the AutoScaler" />
     <MESSAGE value="adding Ensure FnScale component in the EnsureAutoScaler" />
     <MESSAGE value="added Auto Scaling and everything looks to be working just fine" />
-    <MESSAGE value="added The Load Balancer for MAAS" />
-    <option name="LAST_COMMIT_MESSAGE" value="added The Load Balancer for MAAS" />
+    <MESSAGE value="fix" />
+    <MESSAGE value="got everything working here. Time to thouroughly test" />
+    <option name="LAST_COMMIT_MESSAGE" value="got everything working here. Time to thouroughly test" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -392,21 +388,14 @@
           <option name="timeStamp" value="83" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java</url>
+          <line>157</line>
+          <option name="timeStamp" value="190" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/core/ContainerDatacenter.java</url>
           <line>1032</line>
           <option name="timeStamp" value="194" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="fnMap.get(&quot;container_MIPS&quot;) == null" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java</url>
-          <line>55</line>
-          <option name="timeStamp" value="239" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="fnMap.get(&quot;container_MIPS&quot;) == null" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java</url>
-          <line>69</line>
-          <option name="timeStamp" value="240" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessInvoker.java</url>
@@ -424,23 +413,58 @@
           <option name="timeStamp" value="245" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="cont.getId() == 2" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
+          <line>172</line>
+          <option name="timeStamp" value="309" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="cont.getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java</url>
+          <line>115</line>
+          <option name="timeStamp" value="343" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="((ServerlessContainer) getContainersToDestroy().get(x)).getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
+          <line>521</line>
+          <option name="timeStamp" value="344" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="cont.getId() == 23" language="JAVA" />
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
-          <line>124</line>
-          <option name="timeStamp" value="258" />
+          <line>94</line>
+          <option name="timeStamp" value="345" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="vm1.getTotalUtilizationOfCpu(CloudSim.clock()) &gt; 0" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java</url>
-          <line>19</line>
-          <option name="timeStamp" value="272" />
+          <condition expression="((ServerlessContainer) container).getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
+          <line>171</line>
+          <option name="timeStamp" value="346" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="275" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessInvoker.java</url>
+          <line>304</line>
+          <option name="timeStamp" value="347" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="cont.getId() == 23" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
+          <line>132</line>
+          <option name="timeStamp" value="348" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="getContainersToDestroy()" language="JAVA" />
+        <watch expression="Math.round(CloudSim.clock()*100000)/100000 - Math.round(((ServerlessContainer)container).getIdleStartTime()*100000)/100000" language="JAVA" />
+        <watch expression="getId()" language="JAVA" />
+        <watch expression="(((ServerlessRequestScheduler) container.getContainerCloudletScheduler()).getTotalCurrentAllocatedMipsShareForRequests()" language="JAVA" />
+        <watch expression="(((ServerlessRequestScheduler) container.getContainerCloudletScheduler()).getTotalCurrentAllocatedRamForRequests()" language="JAVA" />
+        <watch expression="((ServerlessContainer) container)" language="JAVA" />
+        <watch expression="cont.getIdling()" language="JAVA" />
+        <watch expression="cont.getRunningTasks().size()" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
