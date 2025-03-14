@@ -80,7 +80,7 @@ public class EnsureSimulation {
             createRequests();
 
             // the time at which the simulation has to be terminated.
-            CloudSim.terminateSimulation(200.00);
+            CloudSim.terminateSimulation(2500.00);
 
             // Starting the simualtion
             CloudSim.startSimulation();
@@ -92,6 +92,7 @@ public class EnsureSimulation {
             List<ContainerCloudlet> finishedRequests = controller.getCloudletReceivedList();
 
             saveResultsAsCSV();
+            saveUtilizationSummary();
             // printRequestList(finishedRequests);
              printContainerList(controller.getContainerList());
              Log.printLine(controller.getContainerList().size());
@@ -110,6 +111,46 @@ public class EnsureSimulation {
             e.printStackTrace();
             Log.printLine("Unwanted errors happen");
         }
+    }
+
+    private static void saveUtilizationSummary() {
+        String path = csvResultFilePath + "EnsureSimulation/summary.txt";
+        try {
+            File file = new File(path);
+            Files.createDirectories(Paths.get(file.getParent()));
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                bw.write("Summary of : " + Constants.FUNCTION_REQUESTS_FILENAME + " worklaod\r\n" );
+                bw.write("=========== CONTAINER OUTPUT ==========\r\n");
+                bw.write("Container ID\tVM ID\tStart Time\tFinish Time\tNumber of Requests Served\r\n");
+                DecimalFormat dft = new DecimalFormat("###.##");
+                for (Container container : controller.getContainerList()) {
+                   ServerlessContainer cont = (ServerlessContainer) container;
+                   bw.write("\t\t" + cont.getId() + "\t\t" + cont.getVm().getId() + "\t\t" +
+                           dft.format(cont.getStartTime()) + "\t\t" + dft.format(cont.getFinishTime()) + "\t\t" +
+                           cont.getfinishedTasks().size() + "\r\n"
+                   );
+                }
+
+                bw.write("=========== CONTAINER OUTPUT ==========\r\n");
+                bw.write("Number of Containers Created: " +  controller.getContainerList().size() + "\r\n");
+                bw.write("Number of Containers Destroyed: " +  controller.getContainersDestroyedList().size() + "\r\n");
+
+
+                bw.write("Number of Requests Served: " +  controller.getCloudletReceivedList().size() + "\r\n");
+                bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
+                bw.write("Total Number of Vms used: " + controller.getMaximumVmCount() + "\r\n");
+                bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
+                bw.write("Number of SLO Violations: " + controller.getSloViolationCount(getFunctionsMetadata()) + "\r\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("❌ Error writing to summary file: " + path);
+            }
+
+        } catch (IOException err) {
+            err.printStackTrace();
+            System.err.println("❌ Error writing to summary file: " + path);
+        }
+
     }
 
     private static String getCSVResultsFilePath() {
@@ -223,6 +264,28 @@ public class EnsureSimulation {
             createdRequests += 1;
         }
         br.close();
+    }
+
+    private static HashMap<String, Double> getFunctionsMetadata() {
+        HashMap<String, Double> functionsMetadata = new HashMap<>();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(Constants.FUNCTION_METADATA_FILENAME));
+            String line = null;
+            String csvSplitBy = ",";
+
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(csvSplitBy);
+                if (String.valueOf(data[0]).equals("Function ID")) { continue; }
+                functionsMetadata.put(data[0], Double.parseDouble(data[1]));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        return functionsMetadata;
+
     }
 
     private static ArrayList<EnsureServerlessInvoker> createVmList(int brokerId) {
