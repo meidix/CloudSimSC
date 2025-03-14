@@ -96,7 +96,7 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     private double calculateMedian(List<Integer> values) {
         if (values == null || values.isEmpty()) {
-            return 0;
+            return 1;
         }
         Collections.sort(values);
         int size = values.size();
@@ -122,8 +122,8 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     @Override
     public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
-        int ema = ((MaasServerlessInvoker) vm).getNormalizedEMA(((ServerlessContainer) container).getType());
-        return ( ema < 3 && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
+        int sma = ((MaasServerlessInvoker) vm).getNormalizedSMA(((ServerlessContainer) container).getType());
+        return ( sma < 3 && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
                 .isSuitableForContainer(container, container.getCurrentRequestedBw()));
     }
 

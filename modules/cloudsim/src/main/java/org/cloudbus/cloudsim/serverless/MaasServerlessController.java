@@ -1,9 +1,15 @@
 package org.cloudbus.cloudsim.serverless;
 
 import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.core.containerCloudSimTags;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.SimEvent;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MaasServerlessController extends ServerlessController {
 
@@ -39,6 +45,36 @@ public class MaasServerlessController extends ServerlessController {
 
         containerId++;
 
+    }
+
+    public int getMaximumVmCount() {
+        ArrayList<Integer> vmUsedList = new ArrayList<>();
+        for (Container container : getContainerList()) {
+            ServerlessContainer cont = (ServerlessContainer) container;
+            vmUsedList.add(cont.getVm().getId());
+        }
+
+        Set<Integer> result = new HashSet<>(vmUsedList);
+        return result.size();
+    }
+
+    public int getSloViolationCount(HashMap<String, Double> isoResponseTimes) {
+        int violations = 0;
+        double responseThreshold = 0;
+        for (Container container : getContainerList()) {
+            ServerlessContainer cont = (ServerlessContainer) container;
+            if (isoResponseTimes.containsKey(cont.getType())) {
+                responseThreshold = isoResponseTimes.get(cont.getType()) * Constants.ENSURE_LATENCY_THRESHOLD;
+            }
+            if (responseThreshold > 0) {
+                for (ServerlessRequest request: cont.getfinishedTasks()) {
+                    if ((request.getFinishTime() - request.getArrivalTime()) > responseThreshold) {
+                        violations++;
+                    }
+                }
+            }
+        }
+        return violations;
     }
 
 }

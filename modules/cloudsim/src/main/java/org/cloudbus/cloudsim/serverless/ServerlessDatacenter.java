@@ -90,7 +90,8 @@ public class ServerlessDatacenter extends PowerContainerDatacenterCM {
         tasksWaitingToReschedule = new HashMap<Integer, ServerlessRequest>();
         setMonitoring(monitor);
 //        autoScaler = new FunctionAutoScaler(this);
-        autoScaler = new EnsureAutoScaler(this);
+//        autoScaler = new EnsureAutoScaler(this);
+        autoScaler = new MaasFunctionAutoScaler(this);
 
     }
 

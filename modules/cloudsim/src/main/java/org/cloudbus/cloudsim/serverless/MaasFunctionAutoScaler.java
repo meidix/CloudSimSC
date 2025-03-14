@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.core.ContainerHost;
 import org.cloudbus.cloudsim.container.core.ContainerVm;
+import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,62 +19,125 @@ public class MaasFunctionAutoScaler  extends FunctionAutoScaler {
 
     @Override
     public void scaleFunctions(){
+        int userId = 0;
         if (Constants.FUNCTION_HORIZONTAL_AUTOSCALING) {
-            ArrayList<MaasServerlessInvoker> usedVms = new ArrayList<>();
+            HashMap<String, Map<String, Integer>> globalFunctionContainerMap  = new HashMap<>();
+            HashMap<String, HashMap<String, ArrayList<Integer>>> functionsNormalizedMetrics = new HashMap<>();
             List<? extends ContainerHost> hostList = getServerlessDatacenter().getVmAllocationPolicy().getContainerHostList();
-            for (ContainerHost host : hostList) {
-                for (ContainerVm machine : host.getVmList()) {
+            for (ContainerHost host: hostList) {
+                for (ContainerVm machine: host.getVmList()) {
+                    userId = machine.getUserId();
                     MaasServerlessInvoker vm = (MaasServerlessInvoker) machine;
-                    if (!vm.getFunctionContainerMap().isEmpty()) {
-                        usedVms.add(vm);
-                    }
-                }
-            }
-
-            HashMap<String, HashMap<String, ArrayList<Integer>>> functionSituation = new HashMap<>();
-            for (MaasServerlessInvoker vm : usedVms) {
-                for (Map.Entry<String, ArrayList<Container>> entry: vm.getFunctionContainerMap().entrySet()) {
-                    if (!functionSituation.containsKey(entry.getKey())) {
-                        functionSituation.put(entry.getKey(), new HashMap<>());
-                        functionSituation.get(entry.getKey()).put("ema", new ArrayList<>());
-                        functionSituation.get(entry.getKey()).put("sma", new ArrayList<>());
-                    }
-                    functionSituation.get(entry.getKey()).get("ema").add(vm.getNormalizedEMA(entry.getKey()));
-                    functionSituation.get(entry.getKey()).get("sma").add(vm.getNormalizedSMA(entry.getKey()));
-                }
-            }
-
-            for (Map.Entry<String, HashMap<String, ArrayList<Integer>>> entry: functionSituation.entrySet()) {
-                int clusterEMA = 0;
-                if (entry.getValue().get("ema").size() % 2 == 0) {
-                    int index = entry.getValue().get("ema").size() / 2;
-                    clusterEMA = (entry.getValue().get("ema").get(index - 1) + entry.getValue().get("ema").get(index - 1)) / 2;
-                } else {
-                    clusterEMA = entry.getValue().get("ema").get(entry.getValue().get("ema").size() / 2) ;
-                }
-
-                int clusterSMA = 0;
-                if (entry.getValue().get("sma").size() % 2 == 0) {
-                    int index = entry.getValue().get("sma").size() / 2;
-                    clusterSMA = (entry.getValue().get("sma").get(index - 1) + entry.getValue().get("sma").get(index - 1)) / 2;
-                } else {
-                    clusterSMA = entry.getValue().get("sma").get(entry.getValue().get("sma").size() / 2) ;
-                }
-                if (clusterEMA > clusterSMA) {
-                    // scale out
-                    if (clusterEMA == 2) {
-                        if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
-                            int inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey());
-                            int numContainers = (int) Math.floor(Math.sqrt(inflights));
+                    for (Map.Entry<String, ArrayList<Container>> entry: vm.getFunctionContainerMap().entrySet()) {
+                        if (!globalFunctionContainerMap.containsKey(entry.getKey())) {
+                            if (!entry.getValue().isEmpty()) {
+                                HashMap<String, Integer> fnMap = new HashMap<>();
+                                fnMap.put("container_count", entry.getValue().size());
+                                fnMap.put("container_count_ready", entry.getValue().size());
+                                fnMap.put("container_MIPS", (int) entry.getValue().get(0).getMips());
+                                fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
+                                fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
+                                fnMap.put("container_count_pending", 0);
+                                globalFunctionContainerMap.put(entry.getKey(), fnMap);
+                            }
+                        } else {
+                            HashMap<String, Integer> fnMap = (HashMap<String, Integer>) globalFunctionContainerMap.get(entry.getKey());
+                            fnMap.put("container_count", fnMap.get("container_count") + entry.getValue().size());
+                            fnMap.put("container_count_ready", fnMap.get("container_count_ready") + entry.getValue().size());
+                            globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         }
                     }
-                } else {
-                    // scale down
+                    for (Map.Entry<String, ArrayList<Container>> entry: vm.getFunctionContainerMapPending().entrySet()) {
+                        if (!globalFunctionContainerMap.containsKey(entry.getKey())) {
+                            if (!entry.getValue().isEmpty()) {
+                                HashMap<String, Integer> fnMap = new HashMap<>();
+                                fnMap.put("container_count", entry.getValue().size());
+                                fnMap.put("container_count_ready", 0);
+                                fnMap.put("container_count_pending", entry.getValue().size());
+                                fnMap.put("container_MIPS", (int) entry.getValue().get(0).getMips());
+                                fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
+                                fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
+                                globalFunctionContainerMap.put(entry.getKey(), fnMap);
+                            }
+                        } else {
+                            HashMap<String, Integer> fnMap = (HashMap<String, Integer>) globalFunctionContainerMap.get(entry.getKey());
+                            fnMap.put("container_count_pending", fnMap.get("container_count_pending") + entry.getValue().size());
+                            fnMap.put("container_count", fnMap.get("container_count") + entry.getValue().size());
+                            globalFunctionContainerMap.put(entry.getKey(), fnMap);
+                        }
+                    }
+                    for (String key: vm.getFunctionContainerMap().keySet()) {
+                        if (!functionsNormalizedMetrics.containsKey(key)) {
+                            HashMap<String, ArrayList<Integer>> metricsMap = new HashMap<>();
+                            metricsMap.put("ema", new ArrayList<>());
+                            metricsMap.get("ema").add(vm.getNormalizedEMA(key));
+                            metricsMap.put("sma", new ArrayList<>());
+                            metricsMap.get("sma").add(vm.getNormalizedSMA(key));
+                            functionsNormalizedMetrics.put(key, metricsMap);
+                        } else {
+                            functionsNormalizedMetrics.get(key).get("ema").add(vm.getNormalizedEMA(key));
+                            functionsNormalizedMetrics.get(key).get("sma").add(vm.getNormalizedSMA(key));
+                        }
+                    }
                 }
             }
+            for (Map.Entry<String, Map<String, Integer>> entry: globalFunctionContainerMap.entrySet()) {
+                int inflights = 0;
+                int clusterEMA = 0;
+                int clusterSMA = 1;
+                if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
+                    if (functionsNormalizedMetrics.containsKey(entry.getKey())) {
+                       ArrayList<Integer> emas = functionsNormalizedMetrics.get(entry.getKey()).get("ema");
+                       int sum = 0;
+                       for (int ema: emas) {
+                          sum += ema;
+                       }
+                       clusterEMA = sum / functionsNormalizedMetrics.get(entry.getKey()).get("ema").size();
 
+                        ArrayList<Integer> smas = functionsNormalizedMetrics.get(entry.getKey()).get("sma");
+                        sum = 0;
+                        for (int sma: smas) {
+                            sum += sma;
+                        }
+                        clusterSMA = sum / functionsNormalizedMetrics.get(entry.getKey()).get("sma").size();
+
+                    }
+                    inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey()) - entry.getValue().get("container_count_pending");
+                }
+                inflights = Math.min(inflights, 0);
+                if (((double) (clusterEMA / clusterSMA)) >= 1.0) {
+                    int numberOfContainers = (int) Math.ceil((double)(clusterEMA / clusterSMA) * Math.sqrt(inflights)) + inflights;
+                    int containerGap = numberOfContainers - entry.getValue().get("container_count");
+                    if (containerGap < 0) {
+                        containerGap = 0;
+                    }
+                    for (int i = 0; i < containerGap; i++) {
+                        String[] dt = new String[5] ;
+                        dt[0] = Integer.toString(userId);
+                        dt[1] = entry.getKey();
+                        dt[2] = Double.toString(entry.getValue().get("container_MIPS"));
+                        dt[3] = Double.toString(entry.getValue().get("container_ram"));
+                        dt[4] = Double.toString(entry.getValue().get("container_PES"));
+
+                        getServerlessDatacenter().sendScaledContainerCreationRequest(dt);
+                    }
+
+                }
+            }
+            for (ContainerHost host: hostList) {
+                for (ContainerVm machine: host.getVmList()) {
+                    MaasServerlessInvoker vm = (MaasServerlessInvoker) machine;
+                    for (Map.Entry<String, ArrayList<Container>> entry: vm.getFunctionContainerMap().entrySet()) {
+                        for (Container container: entry.getValue()) {
+                            ServerlessContainer cont = (ServerlessContainer) container;
+                            if (cont.getRunningTasks().isEmpty()) {
+                                cont.setIdleStartTime(CloudSim.clock());
+                                getServerlessDatacenter().getContainersToDestroy().add(cont);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
-
-
 }
