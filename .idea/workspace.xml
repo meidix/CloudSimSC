@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="finalizing ENSURE">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added new settings">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +46,7 @@
     "Application.EnsureSimulation.executor": "Run",
     "Application.MaasSimulation.executor": "Debug",
     "Application.ServerlessSimpleSimulation.executor": "Debug",
+    "Maven.cloudsim-package [clean,install].executor": "Run",
     "Maven.cloudsim-package [clean,package].executor": "Run",
     "Maven.cloudsim-package [clean].executor": "Run",
     "Maven.cloudsim-package [package].executor": "Run",
@@ -350,14 +345,29 @@
       <option name="project" value="LOCAL" />
       <updated>1741885278527</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1741984240770</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1741984240771</updated>
+    </task>
+    <task id="LOCAL-00025" summary="added new settings">
+      <option name="closed" value="true" />
+      <created>1741984259834</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1741984259834</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed Constants" />
     <MESSAGE value="took the first experiment" />
     <MESSAGE value="made some small changes" />
     <MESSAGE value="finally got the first results out" />
@@ -381,7 +391,9 @@
     <MESSAGE value="fix" />
     <MESSAGE value="got everything working here. Time to thouroughly test" />
     <MESSAGE value="finalizing ENSURE" />
-    <option name="LAST_COMMIT_MESSAGE" value="finalizing ENSURE" />
+    <MESSAGE value="fixed bugs" />
+    <MESSAGE value="added new settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="added new settings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -436,21 +448,6 @@
           <option name="timeStamp" value="348" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/core/PowerContainer.java</url>
-          <line>71</line>
-          <option name="timeStamp" value="356" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/core/PowerContainer.java</url>
-          <line>67</line>
-          <option name="timeStamp" value="357" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java</url>
-          <line>29</line>
-          <option name="timeStamp" value="380" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java</url>
           <line>114</line>
           <option name="timeStamp" value="381" />
@@ -476,17 +473,31 @@
           <option name="timeStamp" value="392" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="((ServerlessRequest) rcl.getCloudlet()).getCloudletId() == 5" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessRequestScheduler.java</url>
-          <line>141</line>
-          <option name="timeStamp" value="393" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/schedulers/ContainerCloudletSchedulerDynamicWorkload.java</url>
+          <line>69</line>
+          <option name="timeStamp" value="397" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessRequestScheduler.java</url>
-          <line>123</line>
-          <option name="timeStamp" value="394" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/container/schedulers/ContainerCloudletSchedulerDynamicWorkload.java</url>
+          <line>62</line>
+          <option name="timeStamp" value="406" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaaSFunctionScheduler.java</url>
+          <line>29</line>
+          <option name="timeStamp" value="411" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="invoker.getAvailableMips()" language="JAVA" />
+        <watch expression="((ServerlessContainer) container).getMips()" language="JAVA" />
+        <watch expression="((ServerlessContainerScheduler) vm.getContainerScheduler()).getMipsMap()" language="JAVA" custom="org.cloudbus.cloudsim.container.lists.ContainerList" />
+        <watch expression="request.getFinishTime() - request.getExecStartTime()" language="JAVA" />
+        <watch expression="isoResponseTimes.get(request.getRequestFunctionId())" language="JAVA" />
+        <watch expression="getAvailableMips()" language="JAVA" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

@@ -65,7 +65,7 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
     public double getSMA(String functionId) {
         ArrayList<ServerlessRequest> requests = finishedTasksMap.get(functionId);
         if (requests == null || requests.isEmpty()) {
-            return 0;
+            return isoResponseTimes.get(functionId);
         }
 
         int windowSize = Math.min(Constants.WINDOW_SIZE, requests.size());
