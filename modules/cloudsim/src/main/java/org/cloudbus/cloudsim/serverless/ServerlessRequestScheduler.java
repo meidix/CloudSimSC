@@ -120,6 +120,14 @@ public class ServerlessRequestScheduler extends ContainerCloudletSchedulerDynami
         return getEstimatedFinishTime(rcl, getPreviousTime());
     }
 
+    public double getTotalCurrentMipsShare() {
+        double sum = 0;
+        for (double mips: getCurrentMipsShare()) {
+           sum += mips;
+        }
+        return sum;
+    }
+
     public double updateContainerProcessing(double currentTime, List<Double> mipsShare, ServerlessInvoker vm) {
         setCurrentMipsShare(mipsShare);
         int cpus=0;
@@ -140,7 +148,7 @@ public class ServerlessRequestScheduler extends ContainerCloudletSchedulerDynami
         for (ResCloudlet rcl : getCloudletExecList()) {
 
             rcl.updateCloudletFinishedSoFar((long) (timeSpan
-                    * rcl.getCloudlet().getNumberOfPes()*((ServerlessRequest)(rcl.getCloudlet())).getUtilizationOfCpu()*((ServerlessRequest)(rcl.getCloudlet())).getContainerMIPS()*Consts.MILLION));
+                    * rcl.getCloudlet().getNumberOfPes()*((ServerlessRequest)(rcl.getCloudlet())).getUtilizationOfCpu()*getTotalCurrentMipsShare()*((ServerlessRequest) rcl.getCloudlet()).getCpuShareRequest()*Consts.MILLION));
 
         }
         if (getCloudletExecList().size() == 0 && getCloudletWaitingList().size() == 0) {

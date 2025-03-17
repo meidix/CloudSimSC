@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="got everything working here. Time to thouroughly test">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessRequestScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessRequestScheduler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +43,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.EnsureSimulation.executor": "Run",
+    "Application.EnsureSimulation.executor": "Debug",
     "Application.ServerlessSimpleSimulation.executor": "Debug",
     "Maven.cloudsim-package [clean,package].executor": "Run",
     "Maven.cloudsim-package [clean].executor": "Run",
@@ -408,62 +406,31 @@
           <option name="timeStamp" value="244" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureServerlessInvoker.java</url>
-          <line>66</line>
-          <option name="timeStamp" value="245" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
-          <line>172</line>
-          <option name="timeStamp" value="309" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="cont.getId() == 23" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java</url>
-          <line>115</line>
-          <option name="timeStamp" value="343" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="((ServerlessContainer) getContainersToDestroy().get(x)).getId() == 23" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
-          <line>521</line>
-          <option name="timeStamp" value="344" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <condition expression="cont.getId() == 23" language="JAVA" />
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
           <line>94</line>
           <option name="timeStamp" value="345" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="((ServerlessContainer) container).getId() == 23" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessDatacenter.java</url>
-          <line>171</line>
-          <option name="timeStamp" value="346" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessInvoker.java</url>
           <line>304</line>
           <option name="timeStamp" value="347" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <condition expression="cont.getId() == 23" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
-          <line>132</line>
-          <option name="timeStamp" value="348" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
-        <watch expression="getContainersToDestroy()" language="JAVA" />
-        <watch expression="Math.round(CloudSim.clock()*100000)/100000 - Math.round(((ServerlessContainer)container).getIdleStartTime()*100000)/100000" language="JAVA" />
+        <watch expression="invoker.getAvailableMips()" language="JAVA" />
+        <watch expression="((ServerlessContainer) container).getMips()" language="JAVA" />
+        <watch expression="((ServerlessContainerScheduler) vm.getContainerScheduler()).getMipsMap()" language="JAVA" custom="org.cloudbus.cloudsim.container.lists.ContainerList" />
+        <watch expression="request.getFinishTime() - request.getExecStartTime()" language="JAVA" />
+        <watch expression="isoResponseTimes.get(request.getRequestFunctionId())" language="JAVA" />
+        <watch expression="getAvailableMips()" language="JAVA" />
+        <watch expression="getContainerScheduler().getMipsMap().get(((ServerlessContainer) container).getType())" language="JAVA" />
+        <watch expression="getContainerScheduler().getMipsMap().get(((ServerlessContainer) container).getUid())" language="JAVA" />
         <watch expression="getId()" language="JAVA" />
-        <watch expression="(((ServerlessRequestScheduler) container.getContainerCloudletScheduler()).getTotalCurrentAllocatedMipsShareForRequests()" language="JAVA" />
-        <watch expression="(((ServerlessRequestScheduler) container.getContainerCloudletScheduler()).getTotalCurrentAllocatedRamForRequests()" language="JAVA" />
-        <watch expression="((ServerlessContainer) container)" language="JAVA" />
-        <watch expression="cont.getIdling()" language="JAVA" />
-        <watch expression="cont.getRunningTasks().size()" language="JAVA" />
+        <watch expression="((ServerlessRequest) getCloudletExecList().get(0).getCloudlet()).getContainerId()" language="JAVA" />
+        <watch expression="((ServerlessContainer) cont).getfinishedTasks()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
