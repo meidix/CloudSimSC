@@ -120,8 +120,8 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 4;
-    public static final int NUMBER_VMS = 32;
+    public static final int NUMBER_HOSTS = 6;
+    public static final int NUMBER_VMS = 48;
     public static final int NUMBER_requestS = 5;
 
     /**
@@ -129,7 +129,7 @@ public class Constants {
      */
 
 //    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.mini.csv";
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/simple-burst-single.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/hill-single.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
