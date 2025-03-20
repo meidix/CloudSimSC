@@ -105,7 +105,7 @@ public class MaasFunctionAutoScaler  extends FunctionAutoScaler {
                     inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey()) - entry.getValue().get("container_count_pending");
                 }
                 inflights = Math.min(inflights, 0);
-                if (((double) (clusterEMA / clusterSMA)) >= 1.0) {
+                if (((double) (clusterEMA / clusterSMA)) >= 0.5) {
                     int numberOfContainers = (int) Math.ceil((double)(clusterEMA / clusterSMA) * Math.sqrt(inflights)) + inflights;
                     int containerGap = numberOfContainers - entry.getValue().get("container_count");
                     if (containerGap < 0) {

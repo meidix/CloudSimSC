@@ -7,7 +7,7 @@
     <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="fixed burst support">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
