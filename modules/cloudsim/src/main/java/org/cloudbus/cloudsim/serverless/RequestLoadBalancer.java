@@ -218,7 +218,7 @@ public class RequestLoadBalancer {
                     Iterator<MaasServerlessInvoker> warmIterator = warmInvokers.iterator();
                     while (warmIterator.hasNext()) {
                         selectedVm = warmIterator.next();
-                        if (selectedVm.getNormalizedSMA() < 3) {
+                        if (selectedVm.getNormalizedEMA() < 3) {
                             for (Container container: selectedVm.getFunctionContainerMap().get(task.getRequestFunctionId())) {
                                 MaasServerlessRequestScheduler clScheduler = (MaasServerlessRequestScheduler) (container.getContainerCloudletScheduler());
                                 if (clScheduler.isSuitableForRequest(task, (ServerlessContainer) container)) {
