@@ -63,9 +63,9 @@ public class Constants {
      */
 
     public static final int VM_TYPES = 4;
-    public static final double[] VM_MIPS = new double[]{ 2000, 2000, 2000, 2000};
+    public static final double[] VM_MIPS = new double[]{ 4000, 4000, 4000, 4000};
     public static final int[] VM_PES = new int[]{8, 8, 8, 8};
-    public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
+    public static final float[] VM_RAM = new float[] {(float)32768, (float) 32768, (float) 32768, (float) 32768};//**MB*
     public static final int VM_BW = 200000;
     public static final int VM_SIZE = 30000;
     public static final int CPU_HISTORY_LENGTH = 1000;
@@ -104,11 +104,11 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{4000, 4000, 4000};
+    public static final int[] HOST_MIPS = new int[]{8000, 8000, 8000};
     public static final int[] HOST_PES = new int[]{64, 64, 64};
-    public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
-    public static final int HOST_BW = 10000000;
-    public static final int HOST_STORAGE = 1000000;
+    public static final int[] HOST_RAM = new int[]{262144, 262144, 262144};
+    public static final int HOST_BW = 100000000;
+    public static final int HOST_STORAGE = 10000000;
     public static final PowerModel[] HOST_POWER = new PowerModel[]{new PowerModelSpecPowerHpProLiantMl110G4Xeon3040(),
             new PowerModelSpecPowerHpProLiantMl110G5Xeon3075(), new PowerModelSpecPowerIbmX3550XeonX5670()};
 
@@ -120,8 +120,8 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 6;
-    public static final int NUMBER_VMS = 48;
+    public static final int NUMBER_HOSTS = 3;
+    public static final int NUMBER_VMS = 24;
     public static final int NUMBER_requestS = 5;
 
     /**
