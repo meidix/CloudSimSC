@@ -92,6 +92,7 @@ public class EnsureSimulation {
             List<ContainerCloudlet> finishedRequests = controller.getCloudletReceivedList();
 
             saveResultsAsCSV();
+            saveContainersAsCSV();
             saveUtilizationSummary();
             // printRequestList(finishedRequests);
              printContainerList(controller.getContainerList());
@@ -155,6 +156,41 @@ public class EnsureSimulation {
 
     private static String getCSVResultsFilePath() {
         return csvResultFilePath + "EnsureSimulation/results.csv";
+    }
+
+    private static void saveContainersAsCSV() {
+        String path = csvResultFilePath + "EnsureSimulation/containers.csv";
+        List<ServerlessContainer> containers = controller.getContainerList();
+        try {
+            File file = new File(path);
+            Files.createDirectories(Paths.get(file.getParent()));
+
+            try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+                String[] header = {"Container ID", "VM ID", "Function ID", "Start Time", "Finish Time", "Finished Request Count"};
+                writer.writeNext(header);
+                DecimalFormat dft = new DecimalFormat("####.##");
+                for (ServerlessContainer container : containers) {
+                    String[] data = {
+                            String.valueOf(container.getId()),
+                            String.valueOf(container.getVm().getId()),
+                            container.getType(),
+                            dft.format(container.getStartTime()),
+                            dft.format(container.getFinishTime()),
+                            String.valueOf(container.getfinishedTasks().size())
+                    };
+                    writer.writeNext(data);
+                }
+                System.out.println("Saved Container Data to " + path);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("❌ Error writing to CSV file: " + path);
+            }
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Error Creating the Path: " + path);
+        }
     }
 
     private static void saveResultsAsCSV() {
