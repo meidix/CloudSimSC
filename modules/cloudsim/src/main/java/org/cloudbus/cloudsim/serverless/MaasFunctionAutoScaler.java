@@ -105,23 +105,21 @@ public class MaasFunctionAutoScaler  extends FunctionAutoScaler {
                     inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey()) - entry.getValue().get("container_count_pending");
                 }
                 inflights = Math.min(inflights, 0);
-                if (((double) (clusterEMA / clusterSMA)) >= 0.5) {
-                    int numberOfContainers = (int) Math.ceil((double)(clusterEMA / clusterSMA) * Math.sqrt(inflights)) + inflights;
-                    int containerGap = numberOfContainers - entry.getValue().get("container_count");
-                    if (containerGap < 0) {
-                        containerGap = 0;
-                    }
-                    for (int i = 0; i < containerGap; i++) {
-                        String[] dt = new String[5] ;
-                        dt[0] = Integer.toString(userId);
-                        dt[1] = entry.getKey();
-                        dt[2] = Double.toString(entry.getValue().get("container_MIPS"));
-                        dt[3] = Double.toString(entry.getValue().get("container_ram"));
-                        dt[4] = Double.toString(entry.getValue().get("container_PES"));
 
-                        getServerlessDatacenter().sendScaledContainerCreationRequest(dt);
-                    }
+                int numberOfContainers = (int) Math.ceil((double)(clusterEMA / clusterSMA) * Math.sqrt(inflights)) + inflights;
+                int containerGap = numberOfContainers - entry.getValue().get("container_count");
+                if (containerGap < 0) {
+                    containerGap = 0;
+                }
+                for (int i = 0; i < containerGap; i++) {
+                    String[] dt = new String[5] ;
+                    dt[0] = Integer.toString(userId);
+                    dt[1] = entry.getKey();
+                    dt[2] = Double.toString(entry.getValue().get("container_MIPS"));
+                    dt[3] = Double.toString(entry.getValue().get("container_ram"));
+                    dt[4] = Double.toString(entry.getValue().get("container_PES"));
 
+                    getServerlessDatacenter().sendScaledContainerCreationRequest(dt);
                 }
             }
             for (ContainerHost host: hostList) {
