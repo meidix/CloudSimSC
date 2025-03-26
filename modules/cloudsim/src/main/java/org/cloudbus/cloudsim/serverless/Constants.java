@@ -128,8 +128,8 @@ public class Constants {
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_azure_workload.csv";
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/hybrid-single.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_azure_workload.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/simple-burst.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
