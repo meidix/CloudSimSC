@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="added datacenter charactristics">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="small refinements">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/EnsureSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
