@@ -6,10 +6,7 @@ import org.cloudbus.cloudsim.container.core.ContainerHost;
 import org.cloudbus.cloudsim.container.core.ContainerVm;
 import org.cloudbus.cloudsim.core.CloudSim;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MaasFunctionAutoScaler  extends FunctionAutoScaler {
 
@@ -88,19 +85,21 @@ public class MaasFunctionAutoScaler  extends FunctionAutoScaler {
                 if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
                     if (functionsNormalizedMetrics.containsKey(entry.getKey())) {
                        ArrayList<Integer> emas = functionsNormalizedMetrics.get(entry.getKey()).get("ema");
-                       int sum = 0;
-                       for (int ema: emas) {
-                          sum += ema;
+                       Collections.sort(emas);
+                       if (emas.size() % 2 == 0) {
+                           int index = (emas.size() / 2);
+                           clusterEMA = (emas.get(index - 1) + emas.get(index)) / 2;
+                       } else {
+                           clusterEMA = emas.get(emas.size() / 2);
                        }
-                       clusterEMA = sum / functionsNormalizedMetrics.get(entry.getKey()).get("ema").size();
 
                         ArrayList<Integer> smas = functionsNormalizedMetrics.get(entry.getKey()).get("sma");
-                        sum = 0;
-                        for (int sma: smas) {
-                            sum += sma;
+                        if (smas.size() % 2 == 0) {
+                            int index = (smas.size() / 2);
+                            clusterSMA = (smas.get(index - 1) + smas.get(index)) / 2;
+                        } else {
+                            clusterSMA = smas.get(smas.size() / 2);
                         }
-                        clusterSMA = sum / functionsNormalizedMetrics.get(entry.getKey()).get("sma").size();
-
                     }
                     inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey()) - entry.getValue().get("container_count_pending");
                 }
