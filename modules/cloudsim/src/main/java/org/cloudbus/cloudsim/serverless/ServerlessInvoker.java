@@ -128,8 +128,11 @@ public class ServerlessInvoker extends PowerContainerVm {
     /** Insert the policy for selecting a VM when container concurrency is enableld **/
     public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
 
-        return (((ServerlessContainerScheduler)getContainerScheduler()).isSuitableForContainer(container, vm)
-                && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
+//        return (((ServerlessContainerScheduler)getContainerScheduler()).isSuitableForContainer(container, vm)
+//                && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
+//                .isSuitableForContainer(container, container.getCurrentRequestedBw()));
+
+        return (getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
                 .isSuitableForContainer(container, container.getCurrentRequestedBw()));
     }
 

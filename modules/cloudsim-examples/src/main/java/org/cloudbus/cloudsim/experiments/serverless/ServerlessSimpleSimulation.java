@@ -7,13 +7,10 @@ package org.cloudbus.cloudsim.experiments.serverless;
 * Copyright (c) 2025, Amirkabir University of Technology, Tehran, Iran
 */
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -114,6 +111,8 @@ public class ServerlessSimpleSimulation {
       double averageResourceUtilization = controller.getAverageResourceUtilization();
 
       saveResultsAsCSV();
+      saveContainersAsCSV();
+      saveUtilizationSummary();
       // printRequestList(finishedRequests);
        printContainerList(destroyedContainers);
 //       printContainerList(containerList);
@@ -133,6 +132,98 @@ public class ServerlessSimpleSimulation {
       Log.printLine("Unwanted errors happen");
     }
   }
+
+  private static void saveUtilizationSummary() {
+    String path = csvResultFilePath + "ServerlessSimpleSimulation/summary.txt";
+    try {
+      File file = new File(path);
+      Files.createDirectories(Paths.get(file.getParent()));
+      try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+        bw.write("Summary of : " + Constants.FUNCTION_REQUESTS_FILENAME + " worklaod\r\n" );
+        bw.write("=========== CONTAINER OUTPUT ==========\r\n");
+        bw.write("Container ID\tVM ID\tStart Time\tFinish Time\tNumber of Requests Served\r\n");
+        DecimalFormat dft = new DecimalFormat("###.##");
+        for (Container container : controller.getContainerList()) {
+          ServerlessContainer cont = (ServerlessContainer) container;
+          if (cont.getVm() == null) continue;
+          bw.write("\t\t" + cont.getId() + "\t\t" + cont.getVm().getId() + "\t\t" +
+                  dft.format(cont.getStartTime()) + "\t\t" + dft.format(cont.getFinishTime()) + "\t\t" +
+                  cont.getfinishedTasks().size() + "\r\n"
+          );
+        }
+
+        bw.write("=========== CONTAINER OUTPUT ==========\r\n");
+        bw.write("Number of Containers Created: " +  controller.getContainerList().size() + "\r\n");
+        bw.write("Number of Containers Destroyed: " +  controller.getContainersDestroyedList().size() + "\r\n");
+
+
+        bw.write("Number of Requests Served: " +  controller.getCloudletReceivedList().size() + "\r\n");
+        bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
+        bw.write("Total Number of Vms used: " + getMaximumVmCount() + "\r\n");
+        bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
+      } catch (IOException e) {
+        e.printStackTrace();
+        System.err.println("❌ Error writing to summary file: " + path);
+      }
+
+    } catch (IOException err) {
+      err.printStackTrace();
+      System.err.println("❌ Error writing to summary file: " + path);
+    }
+
+  }
+
+  private static int getMaximumVmCount() {
+    ArrayList<Integer> vmUsedList = new ArrayList<>();
+    for (Container container : controller.getContainerList()) {
+      ServerlessContainer cont = (ServerlessContainer) container;
+      if (cont.getVm() == null) continue;
+      vmUsedList.add(cont.getVm().getId());
+    }
+
+    Set<Integer> result = new HashSet<>(vmUsedList);
+    return result.size();
+  }
+
+
+  private static void saveContainersAsCSV() {
+    String path = csvResultFilePath + "ServerlessSimpleSimulation/containers.csv";
+    List<ServerlessContainer> containers = controller.getContainerList();
+    try {
+      File file = new File(path);
+      Files.createDirectories(Paths.get(file.getParent()));
+
+      try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+        String[] header = {"Container ID", "VM ID", "Function ID", "Start Time", "Finish Time", "Finished Request Count"};
+        writer.writeNext(header);
+        DecimalFormat dft = new DecimalFormat("####.##");
+        for (ServerlessContainer container : containers) {
+          if (container.getVm() == null) {
+           continue;
+          }
+          String[] data = {
+                  String.valueOf(container.getId()),
+                  String.valueOf(container.getVm().getId()),
+                  container.getType(),
+                  dft.format(container.getStartTime()),
+                  dft.format(container.getFinishTime()),
+                  String.valueOf(container.getfinishedTasks().size())
+          };
+          writer.writeNext(data);
+        }
+        System.out.println("Saved Container Data to " + path);
+      } catch (IOException e) {
+        e.printStackTrace();
+        System.err.println("❌ Error writing to CSV file: " + path);
+      }
+
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+      System.err.println("❌ Error Creating the Path: " + path);
+    }
+  }
+
 
   private static String getCSVResultsFilePath() {
     return csvResultFilePath + "ServerlessSimpleSimulation/results.csv";
