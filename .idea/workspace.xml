@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="small refinements">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="removed tests">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/EnsureAutoScaler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,29 +41,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.EnsureSimulation.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerlessSimpleSimulation.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.cloudsim-package [clean,package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cloudsim-package [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cloudsim-package [package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;sim/ensure&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/meidix/Documents/UNI/Thesis/experiments/CloudSimServerlessComputing&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.EnsureSimulation.executor": "Run",
+    "Application.ServerlessSimpleSimulation.executor": "Debug",
+    "Maven.cloudsim-package [clean,package,install].executor": "Run",
+    "Maven.cloudsim-package [clean,package].executor": "Run",
+    "Maven.cloudsim-package [clean].executor": "Run",
+    "Maven.cloudsim-package [package].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "sim/ensure",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/meidix/Documents/UNI/Thesis/experiments/EnsureSim/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments" />
+      <recent name="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data" />
       <recent name="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless" />
       <recent name="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/serverless/data" />
     </key>
@@ -143,6 +147,7 @@
       <workItem from="1741099690973" duration="6796000" />
       <workItem from="1741185580790" duration="5143000" />
       <workItem from="1741707216476" duration="2998000" />
+      <workItem from="1743154606654" duration="13864000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
