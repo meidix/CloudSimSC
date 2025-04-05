@@ -139,7 +139,7 @@ public class MaasSimulation {
 
 
                 bw.write("Number of Requests Served: " +  controller.getCloudletReceivedList().size() + "\r\n");
-                bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
+                bw.write("Average Number of Vms under Load: " + controller.getAverageVmCount() + "\r\n");
                 bw.write("Total Number of Vms used: " + ((MaasServerlessController) controller).getMaximumVmCount() + "\r\n");
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
                 bw.write("Number of SLO Violations: " + ((MaasServerlessController) controller).getSloViolationCount(getFunctionsMetadata()) + "\r\n");

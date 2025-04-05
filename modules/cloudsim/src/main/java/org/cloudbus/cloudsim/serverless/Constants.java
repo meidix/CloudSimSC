@@ -120,16 +120,16 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 3;
-    public static final int NUMBER_VMS = 24;
+    public static final int NUMBER_HOSTS = 4;
+    public static final int NUMBER_VMS = 32;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_azure_workload.csv";
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/hill.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**
@@ -173,7 +173,7 @@ public class Constants {
     * */
     public static final int MAAS_WINDOW_SIZE = 100;
     public static final double MAAS_ALPHA = (double) 2 / 101;
-    public static final double MAAS_SLO = 1.15;
+    public static final double MAAS_SLO = 1.50;
 
 
 }

@@ -6,10 +6,7 @@ import org.cloudbus.cloudsim.container.core.containerCloudSimTags;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.SimEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class MaasServerlessController extends ServerlessController {
 
@@ -64,7 +61,7 @@ public class MaasServerlessController extends ServerlessController {
         for (Container container : getContainerList()) {
             ServerlessContainer cont = (ServerlessContainer) container;
             if (isoResponseTimes.containsKey(cont.getType())) {
-                responseThreshold = isoResponseTimes.get(cont.getType()) * Constants.ENSURE_LATENCY_THRESHOLD;
+                responseThreshold = isoResponseTimes.get(cont.getType()) * Constants.MAAS_SLO;
             }
             if (responseThreshold > 0) {
                 for (ServerlessRequest request: cont.getfinishedTasks()) {
