@@ -1,5 +1,6 @@
 package org.cloudbus.cloudsim.serverless;
 
+import com.opencsv.CSVWriter;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.container.core.*;
 import org.cloudbus.cloudsim.container.lists.ContainerList;
@@ -8,6 +9,9 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -24,6 +28,8 @@ public class ServerlessController extends ContainerDatacenterBroker {
      */
     protected List<ServerlessInvoker> vmIdleList = new ArrayList<>();
     protected List<Container> containerList = new ArrayList<Container>();
+
+    private List<Double> recordTimes;
     /**
      * The containers destroyed list.
      */
@@ -96,7 +102,7 @@ public class ServerlessController extends ContainerDatacenterBroker {
         super(name, overBookingfactor);
         ServerlessController.overBookingfactor = overBookingfactor;
         setContainersDestroyedList(new ArrayList<ServerlessContainer>());
-//        createRequests();
+        recordTimes = new ArrayList<>();
     }
 
     @Override
@@ -439,6 +445,7 @@ public class ServerlessController extends ContainerDatacenterBroker {
             }
             meanAverageVmUsageRecords.add(sumOfAverage/Constants.CPU_HISTORY_LENGTH);
             meanSumOfVmCount.add(sumOfVmCount/Constants.CPU_HISTORY_LENGTH);
+            recordTimes.add(CloudSim.clock());
             averageVmUsageRecords.clear();
             vmCountList.clear();
         }
@@ -469,5 +476,8 @@ public class ServerlessController extends ContainerDatacenterBroker {
         return sumCount/meanSumOfVmCount.size();
     }
 
+    public List<Double> getRecordTimes() { return recordTimes; }
+    public List<Double> getMeanAverageVmUsageRecords() {return meanAverageVmUsageRecords;}
+    public List<Double> getMeanSumOfVmCount() {return meanSumOfVmCount;}
 
 }
