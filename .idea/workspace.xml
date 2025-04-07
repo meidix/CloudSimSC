@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="took azure result">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="fixed a small bug in calculating SLO violations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +164,9 @@
       <workItem from="1741185580790" duration="5143000" />
       <workItem from="1741707216476" duration="2998000" />
       <workItem from="1742408535978" duration="1757000" />
-      <workItem from="1743149514992" duration="17709000" />
+      <workItem from="1743149514992" duration="31659000" />
+      <workItem from="1743848852309" duration="27629000" />
+      <workItem from="1743967918159" duration="18036000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
@@ -411,16 +416,29 @@
       <option name="project" value="LOCAL" />
       <updated>1743007930582</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="took the final results of MAAS">
+      <option name="closed" value="true" />
+      <created>1743322415987</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1743322415987</updated>
+    </task>
+    <task id="LOCAL-00033" summary="fixed a small bug in calculating SLO violations">
+      <option name="closed" value="true" />
+      <created>1743877238339</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1743877238339</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="reverted back to what it was" />
-    <MESSAGE value="trying to fix the problem" />
-    <MESSAGE value="added the previously owned ServerlessSimpleSimulation" />
     <MESSAGE value="added gitignore" />
     <MESSAGE value="removed tests" />
     <MESSAGE value="added request aware Serverless Invoker" />
@@ -443,7 +461,10 @@
     <MESSAGE value="added containers csv" />
     <MESSAGE value="improved auto scaler" />
     <MESSAGE value="just a small bugfix" />
-    <option name="LAST_COMMIT_MESSAGE" value="just a small bugfix" />
+    <MESSAGE value="took the final results of MAAS" />
+    <MESSAGE value="fixed a small bug in calculating SLO" />
+    <MESSAGE value="fixed a small bug in calculating SLO violations" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed a small bug in calculating SLO violations" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -488,13 +509,13 @@
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="cont.getId() == 23" language="JAVA" />
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
-          <line>94</line>
+          <line>96</line>
           <option name="timeStamp" value="345" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <condition expression="cont.getId() == 23" language="JAVA" />
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
-          <line>132</line>
+          <line>134</line>
           <option name="timeStamp" value="348" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -533,6 +554,12 @@
           <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java</url>
           <line>113</line>
           <option name="timeStamp" value="446" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <condition expression="container.getUid().equals(&quot;2-613&quot;)" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java</url>
+          <line>134</line>
+          <option name="timeStamp" value="453" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -10,8 +10,11 @@ import java.util.*;
 
 public class MaasServerlessController extends ServerlessController {
 
+    ArrayList<Double> recordTimes;
+
     public MaasServerlessController(String name, int overBookingfactor) throws Exception {
         super(name, overBookingfactor);
+        recordTimes = new ArrayList<>();
     }
 
     @Override
@@ -72,6 +75,21 @@ public class MaasServerlessController extends ServerlessController {
             }
         }
         return violations;
+    }
+
+    public List<Double> getRecordTimes() { return recordTimes; }
+    public List<Double> getMeanAverageVmUsageRecords() {return meanAverageVmUsageRecords;}
+    public List<Double> getMeanSumOfVmCount() {return meanSumOfVmCount;}
+
+
+
+    @Override
+    public void processRecordCPUUsage(SimEvent ev){
+        int vmUsageSize = meanAverageVmUsageRecords.size();
+        super.processRecordCPUUsage(ev);
+        if (vmUsageSize < meanAverageVmUsageRecords.size()) {
+            recordTimes.add(CloudSim.clock());
+        }
     }
 
 }

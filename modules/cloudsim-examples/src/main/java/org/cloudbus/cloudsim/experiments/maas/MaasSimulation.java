@@ -95,6 +95,7 @@ public class MaasSimulation {
             saveResultsAsCSV();
             saveContainersAsCSV();
             saveUtilizationSummary();
+            saveResourceUsageAsCSV();
             // printRequestList(finishedRequests);
             printContainerList(controller.getContainerList());
             Log.printLine(controller.getContainerList().size());
@@ -180,6 +181,32 @@ public class MaasSimulation {
 
     private static String getCSVResultsFilePath() {
         return csvResultFilePath + "MaasSimulation/results.csv";
+    }
+
+    private static void saveResourceUsageAsCSV() {
+        String path = csvResultFilePath + "MaasSimulation/resources.csv";
+        List<Double> vmUtilizations = ((MaasServerlessController) controller).getMeanAverageVmUsageRecords();
+        List<Double> vmCounts = ((MaasServerlessController) controller).getMeanSumOfVmCount();
+        List<Double> recordTimes = ((MaasServerlessController) controller).getRecordTimes();
+
+        String[] header = {"clock", "utilization", "count"};
+        DecimalFormat dft = new DecimalFormat("###.##");
+        try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+            writer.writeNext(header);
+            for (int i = 0; i < recordTimes.size(); i++) {
+                String[] data = {
+                        dft.format(recordTimes.get(i)),
+                        dft.format(vmUtilizations.get(i)),
+                        dft.format(vmCounts.get(i))
+                };
+                writer.writeNext(data);
+            }
+            System.out.println("Saved Resource Data to " + path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Error writing to CSV file: " + path);
+        }
     }
 
     private static void saveContainersAsCSV() {

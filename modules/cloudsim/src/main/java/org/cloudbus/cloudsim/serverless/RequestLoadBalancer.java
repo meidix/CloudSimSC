@@ -70,6 +70,8 @@ public class RequestLoadBalancer {
     protected boolean selectContainer(ServerlessRequest task){
 //        boolean containerSelected = false ;
         boolean contTypeExists = false;
+        int clusterEMA = 0;
+        int clusterSMA = 0;
         switch (Constants.CONTAINER_SELECTION_ALGO) {
             /** Selecting container using FF method **/
             case "FF": {
@@ -177,9 +179,6 @@ public class RequestLoadBalancer {
                         }
                    }
                 }
-                int clusterEMA = 0;
-                int clusterSMA = 0;
-
                 /*
                 * Cluster Level EMA Calculation
                 * */
@@ -210,8 +209,8 @@ public class RequestLoadBalancer {
 
                         @Override
                         public int compare(MaasServerlessInvoker vm1, MaasServerlessInvoker vm2) {
-                            double vm1Util = vm1.getTotalUtilizationOfCpu(CloudSim.clock());
-                            double vm2Util = vm2.getTotalUtilizationOfCpu(CloudSim.clock());
+                            double vm1Util = (1 - (vm1.getAvailableMips() / vm1.getTotalMips()));
+                            double vm2Util = (1 - (vm2.getAvailableMips() / vm2.getTotalMips()));
                             return Double.compare(vm2Util, vm1Util);
                         }
                     });
@@ -233,10 +232,11 @@ public class RequestLoadBalancer {
                                     return true;
                                 }
                             }
+
                         }
                     }
                 }
-                if (busyInvokers && clusterEMA < clusterSMA) {
+                if (busyInvokers && ((clusterEMA <= 1 && clusterSMA > 1 && clusterSMA < 4) || (clusterEMA == 2 && clusterSMA == 3) )) {
                     if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
                         broker.sendFunctionRetryRequest(task);
                         task.retry++;
