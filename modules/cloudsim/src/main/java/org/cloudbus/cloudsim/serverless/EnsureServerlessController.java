@@ -4,17 +4,18 @@ import org.cloudbus.cloudsim.Cloudlet;
 import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.core.ContainerVm;
 import org.cloudbus.cloudsim.container.lists.ContainerVmList;
+import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.SimEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class EnsureServerlessController  extends ServerlessController {
+    List<Double> recordTimes;
 
 
     public EnsureServerlessController(String name, int overBookingfactor) throws Exception {
         super(name, overBookingfactor);
+        recordTimes = new ArrayList<>();
     }
 
     protected void createContainer(ServerlessRequest cl, String requestId, int brokerId, int vmId) {
@@ -40,6 +41,19 @@ public class EnsureServerlessController  extends ServerlessController {
 
         Set<Integer> result = new HashSet<>(vmUsedList);
         return result.size();
+    }
+
+    public List<Double> getRecordTimes() { return recordTimes; }
+    public List<Double> getMeanAverageVmUsageRecords() {return meanAverageVmUsageRecords;}
+    public List<Double> getMeanSumOfVmCount() {return meanSumOfVmCount;}
+
+    @Override
+    public void processRecordCPUUsage(SimEvent ev){
+        int vmUsageSize = meanAverageVmUsageRecords.size();
+        super.processRecordCPUUsage(ev);
+        if (vmUsageSize < meanAverageVmUsageRecords.size()) {
+            recordTimes.add(CloudSim.clock());
+        }
     }
 
     public int getSloViolationCount(HashMap<String, Double> isoResponseTimes) {

@@ -94,6 +94,7 @@ public class EnsureSimulation {
             saveResultsAsCSV();
             saveContainersAsCSV();
             saveUtilizationSummary();
+            saveResourceUsageAsCSV();
             // printRequestList(finishedRequests);
              printContainerList(controller.getContainerList());
              Log.printLine(controller.getContainerList().size());
@@ -138,7 +139,7 @@ public class EnsureSimulation {
 
 
                 bw.write("Number of Requests Served: " +  controller.getCloudletReceivedList().size() + "\r\n");
-                bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
+                bw.write("Average Number of Vms under Load: " + controller.getAverageVmCount() + "\r\n");
                 bw.write("Total Number of Vms used: " + controller.getMaximumVmCount() + "\r\n");
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
                 bw.write("Number of SLO Violations: " + controller.getSloViolationCount(getFunctionsMetadata()) + "\r\n");
@@ -156,6 +157,32 @@ public class EnsureSimulation {
 
     private static String getCSVResultsFilePath() {
         return csvResultFilePath + "EnsureSimulation/results.csv";
+    }
+
+    private static void saveResourceUsageAsCSV() {
+        String path = csvResultFilePath + "EnsureSimulation/resources.csv";
+        List<Double> vmUtilizations = ((EnsureServerlessController) controller).getMeanAverageVmUsageRecords();
+        List<Double> vmCounts = ((EnsureServerlessController) controller).getMeanSumOfVmCount();
+        List<Double> recordTimes = ((EnsureServerlessController) controller).getRecordTimes();
+
+        String[] header = {"clock", "utilization", "count"};
+        DecimalFormat dft = new DecimalFormat("###.##");
+        try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+            writer.writeNext(header);
+            for (int i = 0; i < recordTimes.size(); i++) {
+                String[] data = {
+                        dft.format(recordTimes.get(i)),
+                        dft.format(vmUtilizations.get(i)),
+                        dft.format(vmCounts.get(i))
+                };
+                writer.writeNext(data);
+            }
+            System.out.println("Saved Resource Data to " + path);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Error writing to CSV file: " + path);
+        }
     }
 
     private static void saveContainersAsCSV() {
