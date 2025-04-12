@@ -8,39 +8,55 @@ import org.cloudbus.cloudsim.container.schedulers.ContainerScheduler;
 import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     private HashMap<String, Double> isoResponseTimes;
+    private double lastRecordTime;
 
     public MaasServerlessInvoker(int id, int userId, double mips, float ram, long bw, long size, String vmm, ContainerScheduler containerScheduler, ContainerRamProvisioner containerRamProvisioner, ContainerBwProvisioner containerBwProvisioner, List<? extends ContainerPe> peList, double schedulingInterval, HashMap<String, Double> isoResponseTimes) {
         super(id, userId, mips, ram, bw, size, vmm, containerScheduler, containerRamProvisioner, containerBwProvisioner, peList, schedulingInterval);
         setIsoResponseTimes(isoResponseTimes);
+        setLastRecordTime(0.0);
     }
+
+    protected void setLastRecordTime(double lastRecordTime) { this.lastRecordTime = lastRecordTime; }
 
     protected void setIsoResponseTimes(HashMap<String, Double> isoResponseTimes) {
         this.isoResponseTimes = isoResponseTimes;
     }
 
+    protected List<ServerlessRequest> getCurrentWindowRequests(String functionId) {
+       ArrayList<ServerlessRequest> requests =  finishedTasksMap.get(functionId);
+       if (requests == null) {
+           return null;
+       }
+       int start = Math.min(Constants.WINDOW_SIZE, requests.size());
+       return requests
+               .subList(start, requests.size())
+               .stream()
+               .filter(req -> req.getFinishTime() > lastRecordTime - Constants.MAAS_TIME_SLOT )
+               .collect(Collectors.toList());
+    }
+
     public double getEMA(String functionId) {
-        ArrayList<ServerlessRequest> requests = finishedTasksMap.get(functionId);
+        List<ServerlessRequest> requests = getCurrentWindowRequests(functionId);
         if (requests == null || requests.isEmpty()) {
             return isoResponseTimes.get(functionId); // or a default value if no requests are present
         }
 
-        int windowSize = Math.min(Constants.MAAS_WINDOW_SIZE, requests.size());
         double ema = 0;
-        // Start with the first response time in the window as the initial EMA value.
-        int start = requests.size() - windowSize;
-        ema = requests.get(start).getFinishTime() - requests.get(start).getExecStartTime();
+        ema = requests.get(0).getFinishTime() - requests.get(0).getExecStartTime();
         double alpha = Constants.MAAS_ALPHA;
 
         // Process the requests in chronological order (oldest to newest within the window)
-        for (int i = start + 1; i < requests.size(); i++) {
+        for (int i = 1; i < requests.size(); i++) {
             ServerlessRequest request = requests.get(i);
             double latest = request.getFinishTime() - request.getExecStartTime();
             ema = alpha * latest + (1 - alpha) * ema;
         }
+        setLastRecordTime(CloudSim.clock());
         return ema;
     }
 
@@ -63,18 +79,18 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
     }
 
     public double getSMA(String functionId) {
-        ArrayList<ServerlessRequest> requests = finishedTasksMap.get(functionId);
+        List<ServerlessRequest> requests = getCurrentWindowRequests(functionId);
         if (requests == null || requests.isEmpty()) {
             return isoResponseTimes.get(functionId);
         }
 
-        int windowSize = Math.min(Constants.WINDOW_SIZE, requests.size());
         double sum = 0;
-        for (int i = requests.size() - windowSize; i < requests.size(); i++) {
+        for (int i = 0; i < requests.size(); i++) {
             ServerlessRequest request = requests.get(i);
             sum += request.getFinishTime() - request.getExecStartTime();
         }
-        return sum / windowSize;
+        setLastRecordTime(CloudSim.clock());
+        return sum / requests.size();
     }
 
     public int getNormalizedSMA(String functionId) {
