@@ -6,6 +6,7 @@ import org.cloudbus.cloudsim.container.containerProvisioners.ContainerRamProvisi
 import org.cloudbus.cloudsim.container.core.Container;
 import org.cloudbus.cloudsim.container.lists.ContainerList;
 import org.cloudbus.cloudsim.container.schedulers.ContainerScheduler;
+import org.cloudbus.cloudsim.core.CloudSim;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +17,16 @@ import java.util.Map;
 public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
 
     private HashMap<String, Double> functionIsoResponseTimes;
+    private double lastRecordedStateTime;
 
 
     public EnsureServerlessInvoker(int id, int userId, double mips, float ram, long bw, long size, String vmm, ContainerScheduler containerScheduler, ContainerRamProvisioner containerRamProvisioner, ContainerBwProvisioner containerBwProvisioner, List<? extends ContainerPe> peList, double schedulingInterval, HashMap<String, Double> functionIsoResponseTimes) {
         super(id, userId, mips, ram, bw, size, vmm, containerScheduler, containerRamProvisioner, containerBwProvisioner, peList, schedulingInterval);
         setFunctionIsoResponseTimes(functionIsoResponseTimes);
+        lastRecordedStateTime = 0;
     }
+
+    protected void setLastRecordedStateTime(double time) { lastRecordedStateTime = time; }
 
     public void setFunctionIsoResponseTimes(HashMap<String, Double> functionIsoResponseTimes) { this.functionIsoResponseTimes = functionIsoResponseTimes;}
 
@@ -54,6 +59,7 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
                     .getValue()
                     .subList(start, entry.getValue().size())
                     .stream()
+                    .filter(req -> req.getFinishTime() > lastRecordedStateTime - Constants.ENSURE_STATE_TIME_WINDOW_SIZE)
                     .mapToDouble(req -> req.getFinishTime() - req.getExecStartTime())
                     .average()
                     .orElse(0.0);
@@ -70,6 +76,7 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
                 current = newState;
             }
         }
+        setLastRecordedStateTime(CloudSim.clock());
         return current;
     }
 
