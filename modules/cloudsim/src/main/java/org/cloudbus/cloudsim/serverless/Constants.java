@@ -63,7 +63,7 @@ public class Constants {
      */
 
     public static final int VM_TYPES = 4;
-    public static final double[] VM_MIPS = new double[]{ 2000, 2000, 2000, 2000};
+    public static final double[] VM_MIPS = new double[]{ 4000, 4000, 4000, 4000};
     public static final int[] VM_PES = new int[]{4, 4, 4, 4};
     public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
     public static final int VM_BW = 200000;
@@ -102,7 +102,7 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{4000, 4000, 4000};
+    public static final int[] HOST_MIPS = new int[]{8000, 8000, 8000};
     public static final int[] HOST_PES = new int[]{32, 32, 32};
     public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
     public static final int HOST_BW = 100000000;
@@ -126,8 +126,8 @@ public class Constants {
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/hybrid-single.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/gradient-ascent.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/gradient-ascent.csv";
 
     /**
      * Algorithm specific parameters
@@ -151,6 +151,8 @@ public class Constants {
     public static final boolean CONTAINER_IDLING_ENABLED = true;
 
     public static final int CONTAINER_IDLING_TIME = 10;
+
+    public static final double LATENCY_SLO = 1.50;
 
 
 }

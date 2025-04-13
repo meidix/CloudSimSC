@@ -480,4 +480,25 @@ public class ServerlessController extends ContainerDatacenterBroker {
     public List<Double> getMeanAverageVmUsageRecords() {return meanAverageVmUsageRecords;}
     public List<Double> getMeanSumOfVmCount() {return meanSumOfVmCount;}
 
+    public int getNumberofColdStarts() {
+        int count = 0;
+        List<ServerlessContainer> containersList = getContainerList();
+        for (ServerlessContainer container : containersList) {
+            if (container.getfinishedTasks().size() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public ArrayList<ServerlessRequest> getColdStartRequests() {
+       ArrayList<ServerlessRequest> requestList = new ArrayList<>();
+       for (Container container: getContainerList()) {
+            if (!((ServerlessContainer) container).getfinishedTasks().isEmpty()) {
+                ServerlessRequest request = ((ServerlessContainer) container).getfinishedTasks().get(0);
+                requestList.add(request);
+            }
+       }
+       return requestList;
+    }
 }

@@ -97,7 +97,7 @@ public class ServerlessSimpleSimulation {
       createRequests();
 
       // the time at which the simulation has to be terminated.
-      CloudSim.terminateSimulation(5000.00);
+      CloudSim.terminateSimulation(500.00);
 
       // Starting the simualtion
       CloudSim.startSimulation();
@@ -114,6 +114,7 @@ public class ServerlessSimpleSimulation {
       saveContainersAsCSV();
       saveUtilizationSummary();
       saveResourceUsageAsCSV();
+      saveColdStartsAsCSV();
       // printRequestList(finishedRequests);
        printContainerList(destroyedContainers);
 //       printContainerList(containerList);
@@ -162,6 +163,7 @@ public class ServerlessSimpleSimulation {
         bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
         bw.write("Total Number of Vms used: " + getMaximumVmCount() + "\r\n");
         bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
+        bw.write("Number of Cold Start Executions: " + controller.getNumberofColdStarts() + "\r\n");
       } catch (IOException e) {
         e.printStackTrace();
         System.err.println("❌ Error writing to summary file: " + path);
@@ -212,6 +214,57 @@ public class ServerlessSimpleSimulation {
     }
   }
 
+  private static void saveColdStartsAsCSV() {
+    String path = csvResultFilePath + "ServerlessSimpleSimulation/cold-starts.csv";
+    List<ServerlessRequest> requestList = controller.getColdStartRequests();
+    try {
+      // Ensure all directories in the path exist
+      File file = new File(path);
+      Files.createDirectories(Paths.get(file.getParent()));
+
+      try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+        // Define CSV Header
+        String[] header = {"Request ID", "Function ID", "Arrival Time", "Start Time",  "Finish Time", "ExecutionTime", "Response Time"};
+        writer.writeNext(header);
+
+        DecimalFormat dft = new DecimalFormat("####.##");
+
+        for (ServerlessRequest request : requestList) {
+          // Extract relevant request data
+          int requestId = request.getCloudletId();
+          String functionId =  request.getRequestFunctionId();
+          double startTime = request.getExecStartTime();
+          double arrivalTime = request.getArrivalTime();
+          double finishTime = request.getFinishTime();
+          double executionTime = request.getFinishTime() - request.getExecStartTime();
+          double responseTime = finishTime -  request.getArrivalTime();
+
+          // Format values for clarity
+          String[] data = {
+                  String.valueOf(requestId),
+                  functionId,
+                  dft.format(arrivalTime),
+                  dft.format(startTime),
+                  dft.format(finishTime),
+                  dft.format(executionTime),
+                  dft.format(responseTime)
+          };
+
+          writer.writeNext(data);
+        }
+
+        System.out.println("✅ Simulation results saved to: " + path);
+
+      } catch (IOException e) {
+        e.printStackTrace();
+        System.err.println("❌ Error writing to CSV file: " + path);
+      }
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+      System.err.println("❌ Error Creating the Path: " + path);
+    }
+  }
 
   private static void saveContainersAsCSV() {
     String path = csvResultFilePath + "ServerlessSimpleSimulation/containers.csv";
