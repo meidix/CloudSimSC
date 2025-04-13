@@ -74,4 +74,26 @@ public class EnsureServerlessController  extends ServerlessController {
         }
         return violations;
     }
+
+    public int getNumberofColdStarts() {
+        int count = 0;
+        List<ServerlessContainer> containersList = getContainerList();
+        for (ServerlessContainer container : containersList) {
+            if (container.getfinishedTasks().size() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public ArrayList<ServerlessRequest> getColdStartRequests() {
+        ArrayList<ServerlessRequest> requestList = new ArrayList<>();
+        for (Container container: getContainerList()) {
+            if (!((ServerlessContainer) container).getfinishedTasks().isEmpty()) {
+                ServerlessRequest request = ((ServerlessContainer) container).getfinishedTasks().get(0);
+                requestList.add(request);
+            }
+        }
+        return requestList;
+    }
 }
