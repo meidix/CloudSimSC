@@ -81,7 +81,7 @@ public class MaasSimulation {
             createRequests();
 
             // the time at which the simulation has to be terminated.
-            CloudSim.terminateSimulation(2500.00);
+            CloudSim.terminateSimulation(500.00);
 
             // Starting the simualtion
             CloudSim.startSimulation();
@@ -96,6 +96,7 @@ public class MaasSimulation {
             saveContainersAsCSV();
             saveUtilizationSummary();
             saveResourceUsageAsCSV();
+            saveColdStartRequestsAsCSV();
             // printRequestList(finishedRequests);
             printContainerList(controller.getContainerList());
             Log.printLine(controller.getContainerList().size());
@@ -114,6 +115,60 @@ public class MaasSimulation {
             e.printStackTrace();
             Log.printLine("Unwanted errors happen");
         }
+    }
+
+    private static void saveColdStartRequestsAsCSV() {
+        String path = csvResultFilePath + "MaasSimulation/cold-starts.csv";
+        List<ServerlessRequest> requestList = ((MaasServerlessController) controller).getColdStartRequests();
+        try {
+            // Ensure all directories in the path exist
+            File file = new File(path);
+            Files.createDirectories(Paths.get(file.getParent()));
+
+            try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+                // Define CSV Header
+                String[] header = {"Request ID", "Function ID", "Arrival Time", "Start Time",  "Finish Time", "ExecutionTime", "Response Time"};
+                writer.writeNext(header);
+
+                DecimalFormat dft = new DecimalFormat("####.##");
+
+                for (ServerlessRequest request : requestList) {
+                    if (!request.getSuccess()) {continue;}
+                    // Extract relevant request data
+                    int requestId = request.getCloudletId();
+                    String functionId =  request.getRequestFunctionId();
+                    double startTime = request.getExecStartTime();
+                    double arrivalTime = request.getArrivalTime();
+                    double finishTime = request.getFinishTime();
+                    double executionTime = request.getFinishTime() - request.getExecStartTime();
+                    double responseTime = finishTime -  request.getArrivalTime();
+
+                    // Format values for clarity
+                    String[] data = {
+                            String.valueOf(requestId),
+                            functionId,
+                            dft.format(arrivalTime),
+                            dft.format(startTime),
+                            dft.format(finishTime),
+                            dft.format(executionTime),
+                            dft.format(responseTime)
+                    };
+
+                    writer.writeNext(data);
+                }
+
+                System.out.println("✅ Simulation results saved to: " + path);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.err.println("❌ Error writing to CSV file: " + path);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Error Creating the Path: " + path);
+        }
+
     }
 
     private static void saveUtilizationSummary() {
@@ -144,6 +199,7 @@ public class MaasSimulation {
                 bw.write("Total Number of Vms used: " + ((MaasServerlessController) controller).getMaximumVmCount() + "\r\n");
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
                 bw.write("Number of SLO Violations: " + ((MaasServerlessController) controller).getSloViolationCount(getFunctionsMetadata()) + "\r\n");
+                bw.write("Number of Cold Start Executions: " + ((MaasServerlessController) controller).getNumberofColdStarts() + "\r\n");
 
             } catch (IOException e) {
                 e.printStackTrace();
