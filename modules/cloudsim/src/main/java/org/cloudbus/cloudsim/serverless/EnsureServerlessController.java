@@ -12,6 +12,9 @@ import java.util.*;
 public class EnsureServerlessController  extends ServerlessController {
     List<Double> recordTimes;
 
+    protected List<Double> vmUsageRecords = new ArrayList<>();
+    protected List<Double> averageWorkloadUsageRecords = new ArrayList<>();
+
 
     public EnsureServerlessController(String name, int overBookingfactor) throws Exception {
         super(name, overBookingfactor);
@@ -49,11 +52,45 @@ public class EnsureServerlessController  extends ServerlessController {
 
     @Override
     public void processRecordCPUUsage(SimEvent ev){
-        int vmUsageSize = meanAverageVmUsageRecords.size();
-        super.processRecordCPUUsage(ev);
-        if (vmUsageSize < meanAverageVmUsageRecords.size()) {
-            recordTimes.add(CloudSim.clock());
+
+        double utilization = 0;
+        int vmCount = 0;
+        double sum=0;
+
+        for(int x=0; x< getVmsCreatedList().size(); x++){
+            utilization   = 1 - getVmsCreatedList().get(x).getAvailableMips() / getVmsCreatedList().get(x).getTotalMips();
+            if(utilization>0){
+                ((ServerlessInvoker)getVmsCreatedList().get(x)).used = true;
+                vmCount++;
+                sum += utilization;
+            }
         }
+        if(sum>0){
+            vmUsageRecords.add(sum);
+            averageVmUsageRecords.add(sum/vmCount);
+            vmCountList.add(vmCount);
+        }
+
+        double sumOfAverage = 0;
+        double sumOfVmCount = 0;
+        double sumOfWorkloadUsage = 0;
+        if(averageVmUsageRecords.size()==Constants.CPU_HISTORY_LENGTH){
+            for(int x=0; x<Constants.CPU_HISTORY_LENGTH; x++){
+                sumOfAverage += averageVmUsageRecords.get(x);
+                sumOfVmCount += vmCountList.get(x);
+                sumOfWorkloadUsage += vmUsageRecords.get(x);
+
+            }
+            meanAverageVmUsageRecords.add(sumOfAverage/Constants.CPU_HISTORY_LENGTH);
+            meanSumOfVmCount.add(sumOfVmCount/Constants.CPU_HISTORY_LENGTH);
+            recordTimes.add(CloudSim.clock());
+            averageWorkloadUsageRecords.add(sumOfWorkloadUsage/Constants.CPU_HISTORY_LENGTH);
+            averageVmUsageRecords.clear();
+            vmCountList.clear();
+            vmUsageRecords.clear();
+        }
+
+        send(this.getId(), Constants.CPU_USAGE_MONITORING_INTERVAL, CloudSimSCTags.RECORD_CPU_USAGE);
     }
 
     public int getSloViolationCount(HashMap<String, Double> isoResponseTimes) {
@@ -95,5 +132,17 @@ public class EnsureServerlessController  extends ServerlessController {
             }
         }
         return requestList;
+    }
+
+    public List<Double> getWorkloadUsageRecords() {
+        return averageWorkloadUsageRecords;
+    }
+
+    public double getWorkloadAverageUsage() {
+        double sum = 0;
+        for (double vmUsage: averageVmUsageRecords) {
+            sum += vmUsage;
+        }
+        return sum/averageWorkloadUsageRecords.size();
     }
 }

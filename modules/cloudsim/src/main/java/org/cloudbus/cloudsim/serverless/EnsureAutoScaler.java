@@ -44,6 +44,15 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                     userId = machine.getUserId();
                     EnsureServerlessInvoker vm = (EnsureServerlessInvoker) machine;
                     for (Map.Entry<String, ArrayList<Container>> entry: vm.getFunctionContainerMap().entrySet()) {
+
+                        int activeContainers = 0;
+                        for (Container container: entry.getValue()) {
+                            ServerlessContainer cont = (ServerlessContainer) container;
+                            if (((ServerlessRequestScheduler) cont.getContainerCloudletScheduler()).getTotalCurrentAllocatedMipsShareForRequests() > 0) {
+                                activeContainers++;
+                            }
+                        }
+
                         if (!globalFunctionContainerMap.containsKey(entry.getKey())) {
                             if (!entry.getValue().isEmpty()) {
                                 HashMap<String, Integer> fnMap = new HashMap<>();
@@ -53,12 +62,14 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                                 fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
                                 fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
                                 fnMap.put("container_count_pending", 0);
+                                fnMap.put("active_container_count", activeContainers);
                                 globalFunctionContainerMap.put(entry.getKey(), fnMap);
                             }
                         } else {
                             HashMap<String, Integer> fnMap = (HashMap<String, Integer>) globalFunctionContainerMap.get(entry.getKey());
                             fnMap.put("container_count", fnMap.get("container_count") + entry.getValue().size());
                             fnMap.put("container_count_ready", fnMap.get("container_count_ready") + entry.getValue().size());
+                            fnMap.put("active_container_count", fnMap.get("active_container_count") + activeContainers);
                             globalFunctionContainerMap.put(entry.getKey(), fnMap);
                         }
                     }
@@ -72,6 +83,7 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
                                 fnMap.put("container_MIPS", (int) entry.getValue().get(0).getMips());
                                 fnMap.put("container_ram", (int) entry.getValue().get(0).getRam());
                                 fnMap.put("container_PES", entry.getValue().get(0).getNumberOfPes());
+                                fnMap.put("active_container_count", 0);
                                 globalFunctionContainerMap.put(entry.getKey(), fnMap);
                             }
                         } else {
@@ -85,10 +97,7 @@ public class EnsureAutoScaler extends FunctionAutoScaler {
             }
             for (Map.Entry<String, Map<String, Integer>> entry: globalFunctionContainerMap.entrySet()) {
                 int inflights = 0;
-                if (((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().containsKey(entry.getKey())) {
-                    inflights = ((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey()) - entry.getValue().get("container_count_pending");
-                }
-                inflights = Math.max(inflights, 0);
+                inflights = globalFunctionContainerMap.get(entry.getKey()).get("active_container_count");
                 int numberOfContainers = (int) Math.ceil(Math.sqrt(inflights)) + inflights;
                 int containerGap = numberOfContainers - entry.getValue().get("container_count");
                 if (containerGap < 0) {

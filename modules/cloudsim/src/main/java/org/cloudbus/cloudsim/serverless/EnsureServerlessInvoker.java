@@ -65,9 +65,9 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
                     .orElse(0.0);
             if (movingAverage <= (allowableRange / 4) + functionIsoResponseTimes.get(entry.getKey())) {
                 newState =  Constants.ENSURE_STATE_SAFE;
-            } else if (movingAverage <= (allowableRange / 2)) {
+            } else if (movingAverage <= (allowableRange / 2) + functionIsoResponseTimes.get(entry.getKey())) {
                 newState =  Constants.ENSURE_STATE_PRE_WARMING;
-            } else if (movingAverage <= (allowableRange / 4) * 3 ) {
+            } else if (movingAverage <= ((allowableRange / 4) * 3) + functionIsoResponseTimes.get(entry.getKey())) {
                 newState =  Constants.ENSURE_STATE_WARNING;
             } else {
                 newState =  Constants.ENSURE_STATE_UNSAFE;

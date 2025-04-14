@@ -63,7 +63,7 @@ public class Constants {
      */
 
     public static final int VM_TYPES = 4;
-    public static final double[] VM_MIPS = new double[]{ 2000, 2000, 2000, 2000};
+    public static final double[] VM_MIPS = new double[]{ 4000, 4000, 4000, 4000};
     public static final int[] VM_PES = new int[]{4, 4, 4, 4};
     public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
     public static final int VM_BW = 200000;
