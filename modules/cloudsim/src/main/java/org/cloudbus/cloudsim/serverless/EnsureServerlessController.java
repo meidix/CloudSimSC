@@ -14,6 +14,7 @@ public class EnsureServerlessController  extends ServerlessController {
 
     protected List<Double> vmUsageRecords = new ArrayList<>();
     protected List<Double> averageWorkloadUsageRecords = new ArrayList<>();
+    protected List<ServerlessRequest> coldStartExecutions = new ArrayList<>();
 
 
     public EnsureServerlessController(String name, int overBookingfactor) throws Exception {
@@ -49,6 +50,7 @@ public class EnsureServerlessController  extends ServerlessController {
     public List<Double> getRecordTimes() { return recordTimes; }
     public List<Double> getMeanAverageVmUsageRecords() {return meanAverageVmUsageRecords;}
     public List<Double> getMeanSumOfVmCount() {return meanSumOfVmCount;}
+
 
     @Override
     public void processRecordCPUUsage(SimEvent ev){
@@ -112,26 +114,9 @@ public class EnsureServerlessController  extends ServerlessController {
         return violations;
     }
 
-    public int getNumberofColdStarts() {
-        int count = 0;
-        List<ServerlessContainer> containersList = getContainerList();
-        for (ServerlessContainer container : containersList) {
-            if (container.getfinishedTasks().size() > 0) {
-                count++;
-            }
-        }
-        return count;
-    }
 
-    public ArrayList<ServerlessRequest> getColdStartRequests() {
-        ArrayList<ServerlessRequest> requestList = new ArrayList<>();
-        for (Container container: getContainerList()) {
-            if (!((ServerlessContainer) container).getfinishedTasks().isEmpty()) {
-                ServerlessRequest request = ((ServerlessContainer) container).getfinishedTasks().get(0);
-                requestList.add(request);
-            }
-        }
-        return requestList;
+    public List<ServerlessRequest> getColdStartRequests() {
+        return coldStartExecutions;
     }
 
     public List<Double> getWorkloadUsageRecords() {

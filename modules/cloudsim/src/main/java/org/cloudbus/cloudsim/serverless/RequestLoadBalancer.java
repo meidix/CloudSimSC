@@ -145,6 +145,7 @@ public class RequestLoadBalancer {
                         broker.toSubmitOnContainerCreation.add(task);
                         ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
                         broker.requestSubmitClock = CloudSim.clock();
+                        ((EnsureServerlessController) broker).getColdStartRequests().add(task);
                         return true;
                     }
                 }

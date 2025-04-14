@@ -145,7 +145,7 @@ public class EnsureSimulation {
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
                 bw.write("Average Workload Usage: " + controller.getWorkloadAverageUsage() + "\r\n");
                 bw.write("Number of SLO Violations: " + controller.getSloViolationCount(getFunctionsMetadata()) + "\r\n");
-                bw.write("Number of Cold Start Executions: " + controller.getNumberofColdStarts() + "\r\n");
+                bw.write("Number of Cold Start Executions: " + controller.getColdStartRequests().size() + "\r\n");
             } catch (IOException e) {
                 e.printStackTrace();
                 System.err.println("❌ Error writing to summary file: " + path);
