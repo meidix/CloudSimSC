@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="improving simulation and results">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="reduced resources&#10;added workload usage data">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/serverless/ServerlessSimpleSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/serverless/ServerlessSimpleSimulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/ServerlessController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -132,7 +130,7 @@
       <workItem from="1743065437054" duration="7401000" />
       <workItem from="1743149517791" duration="18868000" />
       <workItem from="1743848851889" duration="22452000" />
-      <workItem from="1744468546604" duration="4949000" />
+      <workItem from="1744468546604" duration="13789000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
@@ -246,7 +244,23 @@
       <option name="project" value="LOCAL" />
       <updated>1744035656950</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="added cold-start data as well">
+      <option name="closed" value="true" />
+      <created>1744551534982</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1744551534982</updated>
+    </task>
+    <task id="LOCAL-00016" summary="reduced resources&#10;added workload usage data">
+      <option name="closed" value="true" />
+      <created>1744617668298</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1744617668298</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +281,9 @@
     <MESSAGE value="removed tests" />
     <MESSAGE value="took final results from the baseline" />
     <MESSAGE value="improving simulation and results" />
-    <option name="LAST_COMMIT_MESSAGE" value="improving simulation and results" />
+    <MESSAGE value="added cold-start data as well" />
+    <MESSAGE value="reduced resources&#10;added workload usage data" />
+    <option name="LAST_COMMIT_MESSAGE" value="reduced resources&#10;added workload usage data" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
