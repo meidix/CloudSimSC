@@ -81,7 +81,7 @@ public class MaasSimulation {
             createRequests();
 
             // the time at which the simulation has to be terminated.
-            CloudSim.terminateSimulation(500.00);
+            CloudSim.terminateSimulation(3000.00);
 
             // Starting the simualtion
             CloudSim.startSimulation();
@@ -362,7 +362,6 @@ public class MaasSimulation {
         BufferedReader br = new BufferedReader(new FileReader(Constants.FUNCTION_REQUESTS_FILENAME));
         String line = null;
         String cvsSplitBy = ",";
-        controller.noOfTasks++;
 
         // concurrency is enabled
         UtilizationModelPartial utilizationModelPar = new UtilizationModelPartial();
@@ -404,6 +403,7 @@ public class MaasSimulation {
                 System.exit(0);
             }
             request.setUserId(controller.getId());
+            controller.noOfTasks++;
             System.out
                     .println(CloudSim.clock() + " request created. This request arrival time is :" + arrivalTime);
             controller.requestArrivalTime.add(arrivalTime + Constants.FUNCTION_SCHEDULING_DELAY);
