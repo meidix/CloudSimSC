@@ -80,7 +80,7 @@ public class EnsureSimulation {
             createRequests();
 
             // the time at which the simulation has to be terminated.
-            CloudSim.terminateSimulation(500.00);
+            CloudSim.terminateSimulation(3000.00);
 
             // Starting the simualtion
             CloudSim.startSimulation();
@@ -338,7 +338,6 @@ public class EnsureSimulation {
         BufferedReader br = new BufferedReader(new FileReader(Constants.FUNCTION_REQUESTS_FILENAME));
         String line = null;
         String cvsSplitBy = ",";
-        controller.noOfTasks++;
 
         // concurrency is enabled
         UtilizationModelPartial utilizationModelPar = new UtilizationModelPartial();
@@ -379,6 +378,7 @@ public class EnsureSimulation {
                 br.close();
                 System.exit(0);
             }
+            controller.noOfTasks++;
             request.setUserId(controller.getId());
             System.out
                     .println(CloudSim.clock() + " request created. This request arrival time is :" + arrivalTime);
