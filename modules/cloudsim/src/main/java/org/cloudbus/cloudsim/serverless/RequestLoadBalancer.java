@@ -242,8 +242,8 @@ public class RequestLoadBalancer {
                     }
                     return false;
                 }
+                break;
             }
-            break;
         }
 
         if(Constants.CONTAINER_CONCURRENCY && Constants.FUNCTION_HORIZONTAL_AUTOSCALING){
@@ -278,6 +278,7 @@ public class RequestLoadBalancer {
             broker.toSubmitOnContainerCreation.add(task);
             broker.createContainer(task, task.getRequestFunctionId(), task.getUserId());
             broker.requestSubmitClock = CloudSim.clock();
+            ((MaasServerlessController) broker).getColdStartRequests().add(task);
 
             return true;
         }

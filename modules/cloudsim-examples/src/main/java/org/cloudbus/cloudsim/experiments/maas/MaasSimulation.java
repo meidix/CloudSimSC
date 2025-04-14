@@ -200,7 +200,7 @@ public class MaasSimulation {
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
                 bw.write("Average Workload Usage: " + ((MaasServerlessController) controller).getWorkloadAverageUsage() + "\r\n");
                 bw.write("Number of SLO Violations: " + ((MaasServerlessController) controller).getSloViolationCount(getFunctionsMetadata()) + "\r\n");
-                bw.write("Number of Cold Start Executions: " + ((MaasServerlessController) controller).getNumberofColdStarts() + "\r\n");
+                bw.write("Number of Cold Start Executions: " + ((MaasServerlessController) controller).getColdStartRequests().size() + "\r\n");
 
             } catch (IOException e) {
                 e.printStackTrace();

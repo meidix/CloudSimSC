@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="fixed a very bad bug">
+    <list default="true" id="88330c55-5fd5-4d46-bdfb-7d31d59483fb" name="Changes" comment="reduced resources&#10;fixed a bug in auto scaler&#10;added workload usage records&#10;fixed a bug in the invoker">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/maas/MaasSimulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" beforeDir="false" afterPath="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,29 +44,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.EnsureSimulation.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MaasSimulation.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ServerlessSimpleSimulation.executor&quot;: &quot;Debug&quot;,
-    &quot;Maven.cloudsim-package [clean,install].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cloudsim-package [clean,package].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cloudsim-package [clean].executor&quot;: &quot;Run&quot;,
-    &quot;Maven.cloudsim-package [package].executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;sim/bdsm&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/meidix/Documents/UNI/Thesis/experiments/CloudSimServerlessComputing&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.EnsureSimulation.executor": "Run",
+    "Application.MaasSimulation.executor": "Run",
+    "Application.ServerlessSimpleSimulation.executor": "Debug",
+    "Maven.cloudsim-package [clean,install].executor": "Run",
+    "Maven.cloudsim-package [clean,package].executor": "Run",
+    "Maven.cloudsim-package [clean].executor": "Run",
+    "Maven.cloudsim-package [package].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "sim/bdsm",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/meidix/Documents/UNI/Thesis/experiments/CloudSimServerlessComputing",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless" />
@@ -165,7 +168,7 @@
       <workItem from="1743848852309" duration="27629000" />
       <workItem from="1743967918159" duration="23942000" />
       <workItem from="1744041608488" duration="4147000" />
-      <workItem from="1744468546091" duration="5781000" />
+      <workItem from="1744468546091" duration="21363000" />
     </task>
     <task id="LOCAL-00001" summary="changed Constants">
       <option name="closed" value="true" />
@@ -447,15 +450,29 @@
       <option name="project" value="LOCAL" />
       <updated>1744473042257</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="added cold-start data again">
+      <option name="closed" value="true" />
+      <created>1744551669676</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1744551669676</updated>
+    </task>
+    <task id="LOCAL-00037" summary="reduced resources&#10;fixed a bug in auto scaler&#10;added workload usage records&#10;fixed a bug in the invoker">
+      <option name="closed" value="true" />
+      <created>1744617850246</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1744617850246</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added request aware Serverless Invoker" />
-    <MESSAGE value="Completed the Scheduler" />
     <MESSAGE value="added Ensure FunctionScheduler" />
     <MESSAGE value="added EnsureSimulation and Scheduling" />
     <MESSAGE value="added EnsureAutoScaler for now" />
@@ -479,7 +496,9 @@
     <MESSAGE value="fixed a small bug in calculating SLO violations" />
     <MESSAGE value="fixed bugs and improved simulation" />
     <MESSAGE value="fixed a very bad bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed a very bad bug" />
+    <MESSAGE value="added cold-start data again" />
+    <MESSAGE value="reduced resources&#10;fixed a bug in auto scaler&#10;added workload usage records&#10;fixed a bug in the invoker" />
+    <option name="LAST_COMMIT_MESSAGE" value="reduced resources&#10;fixed a bug in auto scaler&#10;added workload usage records&#10;fixed a bug in the invoker" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -565,10 +584,15 @@
           <option name="timeStamp" value="422" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <condition expression="clusterEMA != clusterSMA" language="JAVA" />
-          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasFunctionAutoScaler.java</url>
-          <line>113</line>
-          <option name="timeStamp" value="446" />
+          <condition expression="ema == 4" language="JAVA" />
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/MaasServerlessInvoker.java</url>
+          <line>149</line>
+          <option name="timeStamp" value="456" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/RequestLoadBalancer.java</url>
+          <line>239</line>
+          <option name="timeStamp" value="464" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -576,6 +600,7 @@
       <configuration name="Application">
         <watch expression="((EnsureServerlessDatacenter) getServerlessDatacenter()).getFunctionInflights().get(entry.getKey())" language="JAVA" />
         <watch expression="entry.getKey()" language="JAVA" />
+        <watch expression="entry.getValue()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>

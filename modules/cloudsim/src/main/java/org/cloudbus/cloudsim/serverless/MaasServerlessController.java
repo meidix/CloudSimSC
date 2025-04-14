@@ -14,6 +14,7 @@ public class MaasServerlessController extends ServerlessController {
 
     protected List<Double> vmUsageRecords = new ArrayList<>();
     protected List<Double> averageWorkloadUsageRecords = new ArrayList<>();
+    protected List<ServerlessRequest> coldStartExecutions = new ArrayList<>();
 
     public MaasServerlessController(String name, int overBookingfactor) throws Exception {
         super(name, overBookingfactor);
@@ -128,26 +129,9 @@ public class MaasServerlessController extends ServerlessController {
         send(this.getId(), Constants.CPU_USAGE_MONITORING_INTERVAL, CloudSimSCTags.RECORD_CPU_USAGE);
     }
 
-    public int getNumberofColdStarts() {
-        int count = 0;
-        List<ServerlessContainer> containersList = getContainerList();
-        for (ServerlessContainer container : containersList) {
-            if (container.getfinishedTasks().size() > 0) {
-                count++;
-            }
-        }
-        return count;
-    }
 
-    public ArrayList<ServerlessRequest> getColdStartRequests() {
-        ArrayList<ServerlessRequest> requestList = new ArrayList<>();
-        for (Container container: getContainerList()) {
-            if (!((ServerlessContainer) container).getfinishedTasks().isEmpty()) {
-                ServerlessRequest request = ((ServerlessContainer) container).getfinishedTasks().get(0);
-                requestList.add(request);
-            }
-        }
-        return requestList;
+    public List<ServerlessRequest> getColdStartRequests() {
+        return coldStartExecutions;
     }
 
     public List<Double> getWorkloadUsageRecords() {
