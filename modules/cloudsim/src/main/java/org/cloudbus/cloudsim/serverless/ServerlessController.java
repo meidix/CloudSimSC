@@ -454,10 +454,9 @@ public class ServerlessController extends ContainerDatacenterBroker {
             vmUsageRecords.clear();
         }
 
-
-        send(this.getId(), Constants.CPU_USAGE_MONITORING_INTERVAL, CloudSimSCTags.RECORD_CPU_USAGE);
-
-
+        if (getCloudletReceivedList().isEmpty() || getCloudletReceivedList().size() < noOfTasks ) {
+            send(this.getId(), Constants.CPU_USAGE_MONITORING_INTERVAL, CloudSimSCTags.RECORD_CPU_USAGE);
+        }
     }
 
     public double getAverageResourceUtilization(){
