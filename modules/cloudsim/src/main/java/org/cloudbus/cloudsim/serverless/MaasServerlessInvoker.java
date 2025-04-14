@@ -32,7 +32,7 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
        if (requests == null) {
            return null;
        }
-       int start = Math.min(Constants.WINDOW_SIZE, requests.size());
+       int start = Math.max(requests.size() - Constants.WINDOW_SIZE, 0);
        return requests
                .subList(start, requests.size())
                .stream()
@@ -147,7 +147,7 @@ public class MaasServerlessInvoker  extends ServerlessInvokerRequestAware {
     @Override
     public boolean isSuitableForContainer(Container container, ServerlessInvoker vm) {
         int ema = ((MaasServerlessInvoker) vm).getNormalizedEMA(((ServerlessContainer) container).getType());
-        boolean hasCpuCapacity = container.getMips() <= ( 0.9 * vm.getTotalMips()) -  getMipsAllocatedSoFar();
+        boolean hasCpuCapacity = container.getMips() <= ( 1.3 * vm.getTotalMips()) -  getMipsAllocatedSoFar();
         return ( ema < 3 &&  hasCpuCapacity && getContainerRamProvisioner().isSuitableForContainer(container, container.getCurrentRequestedRam()) && getContainerBwProvisioner()
                 .isSuitableForContainer(container, container.getCurrentRequestedBw()));
     }

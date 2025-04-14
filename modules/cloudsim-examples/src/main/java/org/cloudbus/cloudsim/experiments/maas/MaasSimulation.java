@@ -198,6 +198,7 @@ public class MaasSimulation {
                 bw.write("Average Number of Vms under Load: " + controller.getAverageVmCount() + "\r\n");
                 bw.write("Total Number of Vms used: " + ((MaasServerlessController) controller).getMaximumVmCount() + "\r\n");
                 bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
+                bw.write("Average Workload Usage: " + ((MaasServerlessController) controller).getWorkloadAverageUsage() + "\r\n");
                 bw.write("Number of SLO Violations: " + ((MaasServerlessController) controller).getSloViolationCount(getFunctionsMetadata()) + "\r\n");
                 bw.write("Number of Cold Start Executions: " + ((MaasServerlessController) controller).getNumberofColdStarts() + "\r\n");
 
@@ -244,16 +245,19 @@ public class MaasSimulation {
         List<Double> vmUtilizations = ((MaasServerlessController) controller).getMeanAverageVmUsageRecords();
         List<Double> vmCounts = ((MaasServerlessController) controller).getMeanSumOfVmCount();
         List<Double> recordTimes = ((MaasServerlessController) controller).getRecordTimes();
+        List<Double> workloadUsageRecords = ((MaasServerlessController) controller).getWorkloadUsageRecords();
 
-        String[] header = {"clock", "utilization", "count"};
+        String[] header = {"clock", "utilization", "count", "workload usage"};
         DecimalFormat dft = new DecimalFormat("###.##");
+        DecimalFormat bdft = new DecimalFormat("#####.####");
         try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
             writer.writeNext(header);
             for (int i = 0; i < recordTimes.size(); i++) {
                 String[] data = {
                         dft.format(recordTimes.get(i)),
                         dft.format(vmUtilizations.get(i)),
-                        dft.format(vmCounts.get(i))
+                        dft.format(vmCounts.get(i)),
+                        bdft.format(workloadUsageRecords.get(i))
                 };
                 writer.writeNext(data);
             }

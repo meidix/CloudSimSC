@@ -104,7 +104,7 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{8000, 8000, 8000};
+    public static final int[] HOST_MIPS = new int[]{4000, 4000, 4000};
     public static final int[] HOST_PES = new int[]{32, 32, 32};
     public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
     public static final int HOST_BW = 100000000;
@@ -128,7 +128,7 @@ public class Constants {
      * Name of the file containing function requests list.
      */
 
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.medium.csv";
     public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/gradient-ascent.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 

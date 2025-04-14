@@ -232,7 +232,6 @@ public class RequestLoadBalancer {
                                     return true;
                                 }
                             }
-
                         }
                     }
                 }
