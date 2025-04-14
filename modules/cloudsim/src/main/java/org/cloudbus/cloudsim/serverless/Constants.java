@@ -102,7 +102,7 @@ public class Constants {
      */
 
     public static final int HOST_TYPES = 3;
-    public static final int[] HOST_MIPS = new int[]{8000, 8000, 8000};
+    public static final int[] HOST_MIPS = new int[]{4000, 4000, 4000};
     public static final int[] HOST_PES = new int[]{32, 32, 32};
     public static final int[] HOST_RAM = new int[]{131072, 131072, 131072};
     public static final int HOST_BW = 100000000;

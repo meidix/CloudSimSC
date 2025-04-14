@@ -24,15 +24,10 @@ import org.cloudbus.cloudsim.container.containerVmProvisioners.ContainerVmPe;
 import org.cloudbus.cloudsim.container.containerVmProvisioners.ContainerVmPeProvisionerSimple;
 import org.cloudbus.cloudsim.container.containerVmProvisioners.ContainerVmRamProvisionerSimple;
 import org.cloudbus.cloudsim.container.core.*;
-import org.cloudbus.cloudsim.container.hostSelectionPolicies.HostSelectionPolicy;
-import org.cloudbus.cloudsim.container.hostSelectionPolicies.HostSelectionPolicyFirstFit;
-import org.cloudbus.cloudsim.container.resourceAllocatorMigrationEnabled.PCVmAllocationPolicyMigrationAbstractHostSelection;
 import org.cloudbus.cloudsim.container.resourceAllocators.ContainerVmAllocationPolicy;
 import org.cloudbus.cloudsim.container.resourceAllocators.PowerContainerVmAllocationSimple;
 import org.cloudbus.cloudsim.container.schedulers.ContainerVmSchedulerTimeSharedOverSubscription;
 import org.cloudbus.cloudsim.container.utils.IDs;
-import org.cloudbus.cloudsim.container.vmSelectionPolicies.PowerContainerVmSelectionPolicy;
-import org.cloudbus.cloudsim.container.vmSelectionPolicies.PowerContainerVmSelectionPolicyMaximumUsage;
 import org.cloudbus.cloudsim.serverless.*;
 import org.cloudbus.cloudsim.core.CloudSim;
 
@@ -163,6 +158,7 @@ public class ServerlessSimpleSimulation {
         bw.write("Average Number of Vms under Load: " + Math.ceil(controller.getAverageVmCount()) + "\r\n");
         bw.write("Total Number of Vms used: " + getMaximumVmCount() + "\r\n");
         bw.write("Average CPU Utilization of Vms: " + controller.getAverageResourceUtilization() + "\r\n");
+        bw.write("Average Workload Usage: " + controller.getWorkloadAverageUsage() + "\r\n");
         bw.write("Number of Cold Start Executions: " + controller.getNumberofColdStarts() + "\r\n");
       } catch (IOException e) {
         e.printStackTrace();
@@ -193,16 +189,19 @@ public class ServerlessSimpleSimulation {
     List<Double> vmUtilizations =  controller.getMeanAverageVmUsageRecords();
     List<Double> vmCounts =  controller.getMeanSumOfVmCount();
     List<Double> recordTimes = controller.getRecordTimes();
+    List<Double> workloadUsageRecords = controller.getWorkloadUsageRecords();
 
-    String[] header = {"clock", "utilization", "count"};
+    String[] header = {"clock", "utilization", "count", "workload usage"};
     DecimalFormat dft = new DecimalFormat("###.##");
+    DecimalFormat bdft = new DecimalFormat("#####.####");
     try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
       writer.writeNext(header);
       for (int i = 0; i < recordTimes.size(); i++) {
         String[] data = {
                 dft.format(recordTimes.get(i)),
                 dft.format(vmUtilizations.get(i)),
-                dft.format(vmCounts.get(i))
+                dft.format(vmCounts.get(i)),
+                bdft.format(workloadUsageRecords.get(i))
         };
         writer.writeNext(data);
       }

@@ -1,6 +1,5 @@
 package org.cloudbus.cloudsim.serverless;
 
-import com.opencsv.CSVWriter;
 import org.cloudbus.cloudsim.*;
 import org.cloudbus.cloudsim.container.core.*;
 import org.cloudbus.cloudsim.container.lists.ContainerList;
@@ -9,9 +8,6 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEvent;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -49,6 +45,8 @@ public class ServerlessController extends ContainerDatacenterBroker {
     protected Map<String, ArrayList<ServerlessInvoker>> functionVmMap = new HashMap<String, ArrayList<ServerlessInvoker>>();
     protected List<ServerlessRequest> toSubmitOnContainerCreation = new ArrayList<ServerlessRequest>();
     protected List<Double> averageVmUsageRecords = new ArrayList<Double>();
+    protected List<Double> vmUsageRecords = new ArrayList<>();
+    protected List<Double> averageWorkloadUsageRecords = new ArrayList<>();
     protected List<Double> meanAverageVmUsageRecords = new ArrayList<Double>();
     protected List<Integer> vmCountList = new ArrayList<Integer>();
     protected List<Double> meanSumOfVmCount = new ArrayList<Double>();
@@ -432,22 +430,28 @@ public class ServerlessController extends ContainerDatacenterBroker {
             }
         }
         if(sum>0){
+            vmUsageRecords.add(sum);
             averageVmUsageRecords.add(sum/vmCount);
             vmCountList.add(vmCount);
         }
 
         double sumOfAverage = 0;
         double sumOfVmCount = 0;
+        double sumOfWorkloadUsage = 0;
         if(averageVmUsageRecords.size()==Constants.CPU_HISTORY_LENGTH){
             for(int x=0; x<Constants.CPU_HISTORY_LENGTH; x++){
                 sumOfAverage += averageVmUsageRecords.get(x);
                 sumOfVmCount += vmCountList.get(x);
+                sumOfWorkloadUsage += vmUsageRecords.get(x);
+
             }
             meanAverageVmUsageRecords.add(sumOfAverage/Constants.CPU_HISTORY_LENGTH);
             meanSumOfVmCount.add(sumOfVmCount/Constants.CPU_HISTORY_LENGTH);
             recordTimes.add(CloudSim.clock());
+            averageWorkloadUsageRecords.add(sumOfWorkloadUsage/Constants.CPU_HISTORY_LENGTH);
             averageVmUsageRecords.clear();
             vmCountList.clear();
+            vmUsageRecords.clear();
         }
 
 
@@ -484,7 +488,7 @@ public class ServerlessController extends ContainerDatacenterBroker {
         int count = 0;
         List<ServerlessContainer> containersList = getContainerList();
         for (ServerlessContainer container : containersList) {
-            if (container.getfinishedTasks().size() > 0) {
+            if (!container.getfinishedTasks().isEmpty()) {
                 count++;
             }
         }
@@ -500,5 +504,17 @@ public class ServerlessController extends ContainerDatacenterBroker {
             }
        }
        return requestList;
+    }
+
+    public List<Double> getWorkloadUsageRecords() {
+        return averageWorkloadUsageRecords;
+    }
+
+    public double getWorkloadAverageUsage() {
+        double sum = 0;
+        for (double vmUsage: averageVmUsageRecords) {
+            sum += vmUsage;
+        }
+        return sum/averageWorkloadUsageRecords.size();
     }
 }
