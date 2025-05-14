@@ -118,16 +118,16 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 1;
-    public static final int NUMBER_VMS = 8;
+    public static final int NUMBER_HOSTS = 4;
+    public static final int NUMBER_VMS = 32;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/gradient-ascent.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_azure_workload2.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/azure-1.csv";
 
     /**
      * Algorithm specific parameters
