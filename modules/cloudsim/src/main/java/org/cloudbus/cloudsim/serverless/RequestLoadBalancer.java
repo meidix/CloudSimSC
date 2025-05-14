@@ -163,8 +163,8 @@ public class RequestLoadBalancer {
                 List<Integer> SMAList = new ArrayList<>();
                 for (int x = 1; x <= broker.getVmsCreatedList().size(); x++) {
                    MaasServerlessInvoker vm = ContainerVmList.getById(broker.getVmsCreatedList(), x);
+                    assert vm != null;
                    vm.setFinishedTasksMap(broker.getContainerList());
-                   assert vm != null;
                    EMAList.add(vm.getNormalizedEMA(task.getRequestFunctionId()));
                    SMAList.add(vm.getNormalizedSMA(task.getRequestFunctionId()));
                    if (vm.getFunctionContainerMap().containsKey(task.getRequestFunctionId())) {
