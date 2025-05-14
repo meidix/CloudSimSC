@@ -66,8 +66,8 @@ public class Constants {
     public static final double[] VM_MIPS = new double[]{ 8000, 8000, 8000, 8000};
     public static final int[] VM_PES = new int[]{4, 4, 4, 4};
     public static final float[] VM_RAM = new float[] {(float)16384, (float) 16384, (float) 16384, (float) 16384};//**MB*
-    public static final int VM_BW = 200000;
-    public static final int VM_SIZE = 30000;
+    public static final int VM_BW = 2000000;
+    public static final int VM_SIZE = 300000;
     public static final int CPU_HISTORY_LENGTH = 1000;
 
 
@@ -120,16 +120,16 @@ public class Constants {
      */
 
 
-    public static final int NUMBER_HOSTS = 3;
-    public static final int NUMBER_VMS = 24;
+    public static final int NUMBER_HOSTS = 6;
+    public static final int NUMBER_VMS = 48;
     public static final int NUMBER_requestS = 5;
 
     /**
      * Name of the file containing function requests list.
      */
 
-    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_trace_test1.csv";
-//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/gradient-ascent.csv";
+//    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim/src/main/java/org/cloudbus/cloudsim/serverless/Real_azure_workload2.csv";
+    public static final String FUNCTION_REQUESTS_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/workloads/azure-3.csv";
     public static final String FUNCTION_METADATA_FILENAME = "modules/cloudsim-examples/src/main/java/org/cloudbus/cloudsim/experiments/ensure/data/function_metadata.csv";
 
     /**

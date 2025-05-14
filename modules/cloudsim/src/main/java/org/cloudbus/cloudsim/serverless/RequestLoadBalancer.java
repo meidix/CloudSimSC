@@ -140,20 +140,21 @@ public class RequestLoadBalancer {
                     }
 
 
-                    int capacity = vm.getFunctionCapacity(task.getRequestFunctionId());
-                    if (capacity > 0) {
-                        broker.toSubmitOnContainerCreation.add(task);
-                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
-                        broker.requestSubmitClock = CloudSim.clock();
-                        ((EnsureServerlessController) broker).getColdStartRequests().add(task);
-                        return true;
-                    }
+//                    int capacity = vm.getFunctionCapacity(task.getRequestFunctionId());
+//                    if (capacity > 0) {
+//                        broker.toSubmitOnContainerCreation.add(task);
+//                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
+//                        broker.requestSubmitClock = CloudSim.clock();
+//                        ((EnsureServerlessController) broker).getColdStartRequests().add(task);
+//                        return true;
+//                    }
                 }
-                if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
-                    broker.sendFunctionRetryRequest(task);
-                    task.retry++;
-                }
-                return false;
+//                if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
+//                    broker.sendFunctionRetryRequest(task);
+//                    task.retry++;
+//                    return false;
+//                }
+                break;
             }
         }
 
@@ -189,6 +190,7 @@ public class RequestLoadBalancer {
             broker.toSubmitOnContainerCreation.add(task);
             broker.createContainer(task, task.getRequestFunctionId(), task.getUserId());
             broker.requestSubmitClock = CloudSim.clock();
+            ((EnsureServerlessController) broker).getColdStartRequests().add(task);
 
             return true;
         }

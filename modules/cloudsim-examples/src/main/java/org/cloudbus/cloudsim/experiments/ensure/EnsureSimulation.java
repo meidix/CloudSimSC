@@ -352,7 +352,7 @@ public class EnsureSimulation {
         long requestLength;
         int pesNumber;
         int containerMemory;
-        int containerMips;
+        long containerMips;
 
 
         while ((line = br.readLine()) != null) {
@@ -365,7 +365,7 @@ public class EnsureSimulation {
             requestLength = Long.parseLong(data[2]);
             pesNumber = Integer.parseInt(data[3]);
             containerMemory = Integer.parseInt(data[4]);
-            containerMips = Integer.parseInt(data[5]);
+            containerMips = Math.min(Long.parseLong(data[5]), (long) Constants.VM_MIPS[0] * pesNumber);
             try {
                 request = new ServerlessRequest(
                         IDs.pollId(ServerlessRequest.class),
