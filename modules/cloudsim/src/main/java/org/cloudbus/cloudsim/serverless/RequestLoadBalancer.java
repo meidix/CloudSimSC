@@ -116,7 +116,7 @@ public class RequestLoadBalancer {
                     EnsureServerlessInvoker vm = (EnsureServerlessInvoker) (ContainerVmList.getById(broker.getVmsCreatedList(), x));
                     assert vm != null;
                     vm.setFinishedTasksMap(broker.getContainerList());
-                    if (vm.getState() == Constants.ENSURE_STATE_UNSAFE) continue;
+                    if (vm.getState(task.getRequestFunctionId()) == Constants.ENSURE_STATE_UNSAFE) continue;
                     if (vm.getFunctionContainerMap().containsKey(task.getRequestFunctionId())) {
                         contTypeExists = true;
                         for (Container container: vm.getFunctionContainerMap().get(task.getRequestFunctionId())) {
@@ -140,20 +140,7 @@ public class RequestLoadBalancer {
                     }
 
 
-//                    int capacity = vm.getFunctionCapacity(task.getRequestFunctionId());
-//                    if (capacity > 0) {
-//                        broker.toSubmitOnContainerCreation.add(task);
-//                        ((EnsureServerlessController) broker).createContainer(task, task.getRequestFunctionId(), task.getUserId(), vm.getId());
-//                        broker.requestSubmitClock = CloudSim.clock();
-//                        ((EnsureServerlessController) broker).getColdStartRequests().add(task);
-//                        return true;
-//                    }
                 }
-//                if (task.retry < Constants.MAX_RESCHEDULE_TRIES) {
-//                    broker.sendFunctionRetryRequest(task);
-//                    task.retry++;
-//                    return false;
-//                }
                 break;
             }
         }

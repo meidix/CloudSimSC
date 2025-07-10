@@ -49,6 +49,37 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
         return functionIsoResponseTimes.get(functionId) * Constants.ENSURE_LATENCY_WARNING_THRESHOLD;
     }
 
+    public int getState(String functionId) {
+        if (!getFinishedTaskMap().containsKey(functionId)) {
+            return Constants.ENSURE_STATE_SAFE;
+        }
+
+        double allowableRange = functionIsoResponseTimes.get(functionId) * (Constants.ENSURE_LATENCY_THRESHOLD - 1);
+        ArrayList<ServerlessRequest> results = getFinishedTaskMap().get(functionId);
+
+        int start = Math.max(results.size() - Constants.ENSURE_RESPONSE_TIME_WINDOW_SIZE, 0);
+        double movingAverage = results
+                .subList(start, results.size())
+                .stream()
+                .filter(req -> req.getFinishTime() > lastRecordedStateTime - Constants.ENSURE_STATE_TIME_WINDOW_SIZE)
+                .mapToDouble(req -> req.getFinishTime() - req.getExecStartTime())
+                .average()
+                .orElse(0.0);
+
+        setLastRecordedStateTime(CloudSim.clock());
+
+        if (movingAverage <= (allowableRange / 4) + functionIsoResponseTimes.get(functionId)) {
+            return Constants.ENSURE_STATE_SAFE;
+        } else if (movingAverage <= (allowableRange / 2) + functionIsoResponseTimes.get(functionId)) {
+            return Constants.ENSURE_STATE_PRE_WARMING;
+        } else if (movingAverage <= ((allowableRange / 4) * 3) + functionIsoResponseTimes.get(functionId)) {
+            return Constants.ENSURE_STATE_WARNING;
+        } else {
+            return Constants.ENSURE_STATE_UNSAFE;
+        }
+
+    }
+    // Deprecated: Do not use
     public int getState() {
         int current = Constants.ENSURE_STATE_SAFE;
         int newState;
@@ -100,7 +131,7 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
         if (readyContainers != null) { size = readyContainers.size(); }
         if (pendingContainers != null) { size += pendingContainers.size(); }
         int capacity = Math.max(getPeList().size() - size, 0);
-        int state = getState();
+        int state = getState(functionId);
         if (state == Constants.ENSURE_STATE_WARNING) {
             return Math.min(capacity, 1);
         } else if (state == Constants.ENSURE_STATE_UNSAFE) { return 0;}
