@@ -116,7 +116,7 @@ public class RequestLoadBalancer {
                     EnsureServerlessInvoker vm = (EnsureServerlessInvoker) (ContainerVmList.getById(broker.getVmsCreatedList(), x));
                     assert vm != null;
                     vm.setFinishedTasksMap(broker.getContainerList());
-                    if (vm.getState(task.getRequestFunctionId()) == Constants.ENSURE_STATE_UNSAFE) continue;
+                    if (vm.getState() == Constants.ENSURE_STATE_UNSAFE) continue;
                     if (vm.getFunctionContainerMap().containsKey(task.getRequestFunctionId())) {
                         contTypeExists = true;
                         for (Container container: vm.getFunctionContainerMap().get(task.getRequestFunctionId())) {

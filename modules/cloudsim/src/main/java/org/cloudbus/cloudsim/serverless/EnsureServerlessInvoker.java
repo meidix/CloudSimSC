@@ -131,7 +131,7 @@ public class EnsureServerlessInvoker  extends ServerlessInvokerRequestAware {
         if (readyContainers != null) { size = readyContainers.size(); }
         if (pendingContainers != null) { size += pendingContainers.size(); }
         int capacity = Math.max(getPeList().size() - size, 0);
-        int state = getState(functionId);
+        int state = getState();
         if (state == Constants.ENSURE_STATE_WARNING) {
             return Math.min(capacity, 1);
         } else if (state == Constants.ENSURE_STATE_UNSAFE) { return 0;}
